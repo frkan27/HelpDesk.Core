@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HelpDesk.BLL.Repository.Abstracts;
+using HelpDesk.BLL.Repository.RoleUser;
 using HelpDesk.DAL;
 using HelpDesk.Model.Enums;
 using HelpDesk.Model.IdentityEntities;
@@ -75,6 +77,10 @@ namespace HelpDesk.WebUI
                 options.SlidingExpiration = true;
             });
 
+            services.AddScoped<IRepoIdentity, RoleUserRepo>();
+            services.AddScoped<SignInManager<AppUser>, SignInManager<AppUser>>();
+            services.AddScoped<UserManager<AppUser>, UserManager<AppUser>>();
+            services.AddScoped<RoleManager<AppRole>, RoleManager<AppRole>>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddAuthorization(options =>
