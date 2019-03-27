@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using HelpDesk.Model.Entities.Poco;
 using HelpDesk.Model.IdentityEntities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace HelpDesk.DAL
 {
@@ -13,5 +11,7 @@ namespace HelpDesk.DAL
         {
 
         }
+
+        public virtual DbSet<FaultRecord> FaultRecords { get; set; }
     }
 }

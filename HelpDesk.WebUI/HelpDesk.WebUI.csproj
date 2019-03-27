@@ -32,4 +32,8 @@
     <None Include="Views\Shared\_LoginPartial.cshtml" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\Entities\" />
+  </ItemGroup>
+
 </Project>
