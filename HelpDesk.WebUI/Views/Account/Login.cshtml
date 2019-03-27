@@ -9,19 +9,22 @@
     <div class="col-md-6 col-md-offset-3">
         <form asp-controller="Account" asp-action="Login" method="post">
             <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="UserName">Kullanıcı Adı</label>
-                <input type="text" asp-for="UserName" class="form-control" />
+            <div class="input-group">
+                @*<label asp-for="UserName">Kullanıcı Adı</label>*@
+                <span class="input-group-addon"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></span>
+
+                <input type="text" asp-for="UserName" class="form-control" placeholder="Kullanıcı Adınızı Giriniz.."/>
             </div>
-            <div class="form-group">
-                <label asp-for="Password">Parola</label>
-                <input type="password" asp-for="Password" class="form-control" />
+            <div class="input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></span>
+                <input type="password" asp-for="Password" class="form-control" placeholder="Şifrenizi Giriniz.." />
             </div>
-            <div class="form-group">
-                <label asp-for="RememberMe">Parola</label>
-                <input type="checkbox" asp-for="RememberMe" class="checkbox" />
+            <div class="input-group">
+         
+                <label asp-for="RememberMe">Beni Hatırla</label>
+                <input type="checkbox" asp-for="RememberMe" class="checkbox"   />
             </div>
-            <div class="form-group">
+            <div class="input-group">
                 <input type="submit" value="Login" class="btn btn-info" />
             </div>
         </form>
