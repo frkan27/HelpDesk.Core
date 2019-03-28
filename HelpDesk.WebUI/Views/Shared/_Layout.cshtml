@@ -1,75 +1,81 @@
 ﻿<!DOCTYPE html>
-<html>
+
+<html class="app-ui">
+
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Kuzey.UI.Web</title>
+    <!-- Meta -->
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+    <!-- Document title -->
+    <title>Pages &ndash; Blank | AppUI</title>
+
+    <meta name="description" content="Teknik Destek Yardım" />
+    <meta name="author" content="Furkan Kılıç & İsmail Çadır" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>HelpDesk - @ViewBag.Title</title>
 
     <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/css/site.css" />
+        <!-- Favicons -->
+        <link rel="apple-touch-icon" href="~/assets/img/favicons/apple-touch-icon.png" />
+        <link rel="icon" href="~/assets/img/favicons/favicon.ico" />
+
+        <!-- Google fonts -->
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,400italic,500,900%7CRoboto+Slab:300,400%7CRoboto+Mono:400" />
+
+        <!-- AppUI CSS stylesheets -->
+        <link rel="stylesheet" id="css-font-awesome" href="~/assets/css/font-awesome.css" />
+        <link rel="stylesheet" id="css-ionicons" href="~/assets/css/ionicons.css" />
+        <link rel="stylesheet" id="css-bootstrap" href="~/assets/css/bootstrap.css" />
+        <link rel="stylesheet" id="css-app" href="~/assets/css/app.css" />
+        <link rel="stylesheet" id="css-app-custom" href="~/assets/css/app-custom.css" />
+        <!-- End Stylesheets -->
+     
     </environment>
-    <environment exclude="Development">
-        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-    </environment>
+    
+    @RenderSection("top", false)
+    @RenderSection("timelinetop", false)
 </head>
-<body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Kuzey.UI.Web</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                </ul>
-                <partial name="_LoginPartial" />
-            </div>
+
+<body class="app-ui layout-has-drawer layout-has-fixed-header">
+    <div class="app-layout-canvas">
+        <div class="app-layout-container">
+
+            @{await Html.RenderPartialAsync("~/Views/Shared/_Partial/_HeaderPartial.cshtml");}
+
+            <main class="app-layout-content">
+
+                <!-- Page Content -->
+                <div class="container-fluid p-y-md">
+                    @RenderBody()
+                </div>
+                <!-- End Page Content -->
+
+            </main>
+
         </div>
-    </nav>
-
-    <partial name="_CookieConsentPartial" />
-
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; 2019 - Kuzey.UI.Web</p>
-        </footer>
+        <!-- .app-layout-container -->
     </div>
+    <!-- .app-layout-canvas -->
+    <!-- Apps Modal -->
+    <!-- Opens from the button in the header -->
 
-    <environment include="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery"
-                crossorigin="anonymous"
-                integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
-        </script>
-        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                crossorigin="anonymous"
-                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
-        </script>
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
-    </environment>
+    @{ await Html.RenderPartialAsync("~/Views/Shared/_Partial/_ModalPartial.cshtml");}
+    <!-- End Apps Modal -->
 
-    @RenderSection("Scripts", required: false)
+    <div class="app-ui-mask-modal"></div>
+
+    <!-- AppUI Core JS: jQuery, Bootstrap, slimScroll, scrollLock and App.js -->
+    <script src="~/assets/js/core/jquery.min.js"></script>
+    <script src="~/assets/js/core/bootstrap.min.js"></script>
+    <script src="~/assets/js/core/jquery.slimscroll.min.js"></script>
+    <script src="~/assets/js/core/jquery.scrollLock.min.js"></script>
+    <script src="~/assets/js/core/jquery.placeholder.min.js"></script>
+    <script src="~/assets/js/app.js"></script>
+    <script src="~/assets/js/app-custom.js"></script>
+@RenderSection("bottom", false)
+@RenderSection("timelinebottom", false)
 </body>
+
 </html>

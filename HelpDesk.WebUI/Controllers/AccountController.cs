@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using HelpDesk.BLL.Repository.Abstracts;
 using HelpDesk.Model.ViewModels.UserViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HelpDesk.WebUI.Controllers
@@ -11,6 +12,7 @@ namespace HelpDesk.WebUI.Controllers
     public class AccountController : Controller
     {
         private readonly IRepoIdentity _userRoleRepo;
+     
 
         public AccountController(IRepoIdentity userRoleRepo)
         {
@@ -19,6 +21,7 @@ namespace HelpDesk.WebUI.Controllers
 
         public IActionResult Index()
         {
+           
             return View();
         }
 
