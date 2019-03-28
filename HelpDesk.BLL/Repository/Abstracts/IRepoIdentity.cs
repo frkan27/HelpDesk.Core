@@ -11,6 +11,6 @@ namespace HelpDesk.BLL.Repository.Abstracts
         Task<SignInResult> LoginUser(LoginViewModel model);
         Task Logout();
         Task CreateRoles();
-        Task AddRole(AppUser user);
+        Task AddRole(ApplicationUser user);
     }
 }

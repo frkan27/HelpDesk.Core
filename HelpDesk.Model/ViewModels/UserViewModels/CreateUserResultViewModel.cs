@@ -7,6 +7,6 @@ namespace HelpDesk.Model.ViewModels.UserViewModels
     {
         public IdentityResult IdentityResult { get; set; }
 
-        public AppUser User { get; set; }
+        public ApplicationUser User { get; set; }
     }
 }

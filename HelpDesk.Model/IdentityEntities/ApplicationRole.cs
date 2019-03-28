@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HelpDesk.Model.IdentityEntities
 {
-    public class AppRole : IdentityRole
+    public class ApplicationRole : IdentityRole
     {
         [StringLength(128)]
         public string Desc { get; set; }

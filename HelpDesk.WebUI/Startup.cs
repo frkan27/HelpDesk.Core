@@ -42,7 +42,7 @@ namespace HelpDesk.WebUI
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<AppUser, AppRole>()
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<MyContext>();
 
             services.Configure<IdentityOptions>(options =>
@@ -78,9 +78,9 @@ namespace HelpDesk.WebUI
             });
 
             services.AddScoped<IRepoIdentity, RoleUserRepo>();
-            services.AddScoped<SignInManager<AppUser>, SignInManager<AppUser>>();
-            services.AddScoped<UserManager<AppUser>, UserManager<AppUser>>();
-            services.AddScoped<RoleManager<AppRole>, RoleManager<AppRole>>();
+            services.AddScoped<SignInManager<ApplicationUser>, SignInManager<ApplicationUser>>();
+            services.AddScoped<UserManager<ApplicationUser>, UserManager<ApplicationUser>>();
+            services.AddScoped<RoleManager<ApplicationRole>, RoleManager<ApplicationRole>>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddAuthorization(options =>

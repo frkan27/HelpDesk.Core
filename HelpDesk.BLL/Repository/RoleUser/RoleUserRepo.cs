@@ -14,12 +14,12 @@ namespace HelpDesk.BLL.Repository.RoleUser
 {
     public class RoleUserRepo : IRepoIdentity
     {
-        private readonly SignInManager<AppUser> _signInManager;
-        private readonly UserManager<AppUser> _userManager;
-        private readonly RoleManager<AppRole> _roleManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly MyContext DbContext;
 
-        public RoleUserRepo(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, MyContext dbContext)
+        public RoleUserRepo(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, MyContext dbContext)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -37,7 +37,7 @@ namespace HelpDesk.BLL.Repository.RoleUser
 
         public async Task<CreateUserResultViewModel> RegisterUser(RegisterViewModel model)
         {
-            var user = new AppUser()
+            var user = new ApplicationUser()
             {
                 Email = model.Email,
                 Name = model.Name,
@@ -60,7 +60,7 @@ namespace HelpDesk.BLL.Repository.RoleUser
             {
                 if (!_roleManager.RoleExistsAsync(role).Result)
                 {
-                    await _roleManager.CreateAsync(new AppRole()
+                    await _roleManager.CreateAsync(new ApplicationRole()
                     {
                         Name = role
                     });
@@ -68,7 +68,7 @@ namespace HelpDesk.BLL.Repository.RoleUser
             }
         }
 
-        public async Task AddRole(AppUser user)
+        public async Task AddRole(ApplicationUser user)
         {
             if (_userManager.Users.Count() == 1)
             {

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HelpDesk.Model.IdentityEntities
 {
-    public class AppUser : IdentityUser
+    public class ApplicationUser : IdentityUser
     {
         [Required, StringLength(50)]
         public string Name { get; set; }
