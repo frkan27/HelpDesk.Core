@@ -13,5 +13,8 @@ namespace HelpDesk.DAL
         }
 
         public virtual DbSet<FaultRecord> FaultRecords { get; set; }
+
+       public virtual DbSet<Photo> Photos { get; set; }
+       public virtual DbSet<FaultLOG> FaultLogs { get; set; }
     }
 }
