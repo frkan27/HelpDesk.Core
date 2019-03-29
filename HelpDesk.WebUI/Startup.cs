@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using HelpDesk.BLL;
 using HelpDesk.BLL.Repository.Abstracts;
 using HelpDesk.BLL.Repository.RoleUser;
 using HelpDesk.DAL;
+using HelpDesk.Model.Entities.Poco;
 using HelpDesk.Model.Enums;
 using HelpDesk.Model.IdentityEntities;
+using HelpDesk.Model.ViewModels.FaultViewModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -85,6 +88,10 @@ namespace HelpDesk.WebUI
             services.AddScoped<MembershipTools, MembershipTools>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            services.AddAutoMapper();
+
+            Mapper.Initialize(MapConfig);
+
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("RequireAdministratorRole",
@@ -96,7 +103,12 @@ namespace HelpDesk.WebUI
                     policy => policy.RequireRole(IdentityRoles.User.ToString()));
             });
         }
-
+        private void MapConfig(IMapperConfigurationExpression cfg)
+        {
+            cfg.CreateMap<FaultRecord, FaultViewModels>()
+                .ForMember(dest => dest.FaultId, opt => opt.MapFrom(x => x.Id))
+                .ReverseMap();
+        }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
@@ -115,7 +127,7 @@ namespace HelpDesk.WebUI
             app.UseCookiePolicy();
 
             app.UseAuthentication();
-
+            
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

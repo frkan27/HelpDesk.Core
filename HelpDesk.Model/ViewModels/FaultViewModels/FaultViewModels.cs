@@ -12,38 +12,39 @@ namespace HelpDesk.Model.ViewModels.FaultViewModels
     public class FaultViewModels
     {
         
-        public int ArizaId { get; set; }
+        public int FaultId { get; set; }
 
         [Required(ErrorMessage = "Lütfen Açıklama kısmını doldurdunuz.")]
         [DisplayName("Arıza Açıklaması")]
         [StringLength(1000)]
-        public string ArızaAcıklaması { get; set; }
+        public string FaultDescription { get; set; }
 
         [Required(ErrorMessage = "Adres Alanını doldurunuz.")]
         [DisplayName("Adres Giriniz :")]
         [StringLength(500, ErrorMessage = "Adres Alanı max 500 karakter olabilir.")]
-        public string Adres { get; set; }
+        public string Adress { get; set; }
 
         [DisplayName("Telefon Numarası :")]
-        public string Telno { get; set; }
+        public string PhoneNumber { get; set; }
 
         [DisplayName("İletişim Maili")]
         public string Email { get; set; }
 
-
-        public double? Enlem { get; set; }
-
-        public double? Boylam { get; set; }
+        // TODO Harita Alanı için gerekli kısım
+        [DisplayName("Enlem Giriniz")]
+        public double? latitude { get; set; }
+        [DisplayName("Boylam Giriniz ")]
+        public double? longitude { get; set; }
 
         public string UserId { get; set; }
 
         //TODO resimler için gerekli alanlar kısmı
         [DisplayName("Ürün Resmi Ekleyiniz :")]
-        public List<string> ArızaPath { get; set; }
+        public List<string> FaultPath { get; set; }
         [DisplayName("Arızali Ürün Resmini Ekleyiniz :")]
-        public List<IFormFile> PostedFileAriza { get; set; }
+        public List<IFormFile> PostedFileFault { get; set; }
         [DisplayName("Fatura Resmini Ekleyiniz")]
-        public string FaturaPath { get; set; }
+        public string BillPath { get; set; }
         [DisplayName("Ürünün Fatura Resmini Ekleyiniz.")]
         public IFormFile PostedFileFatura { get; set; }
 
