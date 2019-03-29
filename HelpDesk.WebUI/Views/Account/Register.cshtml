@@ -1,44 +1,62 @@
 ﻿@model HelpDesk.Model.ViewModels.UserViewModels.RegisterViewModel
 @{
     ViewData["Title"] = "Register";
-    Layout = "_Layout";
+    Layout = null;
 }
 
-<h2>Register</h2>
 
-<div class="row">
-    <div class="col-md-6 col-md-offset-3">
-        <form asp-controller="Account" asp-action="Register" method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="input-group">
-                <span class="input-group-addon"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></span>
-                <input type="text" asp-for="UserName" class="form-control" placeholder="Kullanıcı adını Giriniz.." />
-            </div>
-            <div class="input-group ">
-                <span class="input-group-addon"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></span>
-                <input type="text" asp-for="Name" class="form-control" placeholder="Adınızı Giriniz.." />
-            </div>
+<!-- Bootstrap Core CSS -->
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<!-- Custom CSS -->
+<link href="~/Content/shop-homepage.css" rel="stylesheet" />
 
-            <div class="input-group">
-                <span class="input-group-addon"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></span>
-                <input type="text" asp-for="Surname" class="form-control" placeholder="Soyadınızı Giriniz.." />
+<script src="~/Scripts/jquery-3.1.1.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<link href="~/Content/login-register.css" rel="stylesheet" />
+
+<section class="login-info">
+    <div class="container">
+        <div class="row main">
+            <div class="form-header">
+                <h1 class="text-center ">Kayıt Formu </h1>
             </div>
-            <div class="input-group">
-                <span class="input-group-addon"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></span>
-                <input type="email" asp-for="Email" class="form-control" placeholder="Mailinizi Giriniz.." />
+            <div class="main-content">
+
+                @Html.ValidationSummary(false)
+                <form asp-controller="Account" asp-action="Register" method="post">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="input-group">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></span>
+                        <input type="text" asp-for="UserName" class="form-control" placeholder="Kullanıcı adını Giriniz.." />
+                    </div>
+                    <div class="input-group ">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></span>
+                        <input type="text" asp-for="Name" class="form-control" placeholder="Adınızı Giriniz.." />
+                    </div>
+
+                    <div class="input-group">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></span>
+                        <input type="text" asp-for="Surname" class="form-control" placeholder="Soyadınızı Giriniz.." />
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></span>
+                        <input type="email" asp-for="Email" class="form-control" placeholder="Mailinizi Giriniz.." />
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></span>
+                        <input type="password" asp-for="Password" class="form-control" placeholder="Şifrenizi giriniz..." />
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></span>
+                        <input type="password" asp-for="ConfirmPassword" class="form-control" placeholder="Şifrenizi Tekrar Giriniz." />
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Register" class="btn btn-info" />
+                    </div>
+                </form>
+
+
             </div>
-            <div class="input-group">
-                <span class="input-group-addon"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></span>
-                <input type="password" asp-for="Password" class="form-control" placeholder="Şifrenizi giriniz..." />
-            </div>
-            <div class="input-group">
-                <span class="input-group-addon"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></span>
-                <input type="password" asp-for="ConfirmPassword" class="form-control" placeholder="Şifrenizi Tekrar Giriniz." />
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Register" class="btn btn-info" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
-
+</section>

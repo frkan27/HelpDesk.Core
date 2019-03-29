@@ -1,32 +1,50 @@
 ﻿@model HelpDesk.Model.ViewModels.UserViewModels.LoginViewModel
 @{
     ViewData["Title"] = "Login";
+    Layout = null;
 }
 
-<h2>Login</h2>
+<!-- Bootstrap Core CSS -->
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<!-- Custom CSS -->
+<link href="~/Content/shop-homepage.css" rel="stylesheet" />
 
-<div class="row">
-    <div class="col-md-6 col-md-offset-3">
-        <form asp-controller="Account" asp-action="Login" method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="input-group">
-                @*<label asp-for="UserName">Kullanıcı Adı</label>*@
-                <span class="input-group-addon"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></span>
+<script src="~/Scripts/jquery-3.1.1.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<link href="~/Content/login-register.css" rel="stylesheet" />
 
-                <input type="text" asp-for="UserName" class="form-control" placeholder="Kullanıcı Adınızı Giriniz.."/>
+<section class="login-info">
+    <div class="container">
+        <div class="row main">
+            <div class="form-header">
+                <h1 class="text-center ">Giriş Formu </h1>
             </div>
-            <div class="input-group">
-                <span class="input-group-addon"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></span>
-                <input type="password" asp-for="Password" class="form-control" placeholder="Şifrenizi Giriniz.." />
+            <div class="main-content">
+
+                @Html.ValidationSummary(false)
+                <form asp-controller="Account" asp-action="Login" method="post">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="input-group">
+                        @*<label asp-for="UserName">Kullanıcı Adı</label>*@
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></span>
+
+                        <input type="text" asp-for="UserName" class="form-control" placeholder="Kullanıcı Adınızı Giriniz.." />
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></span>
+                        <input type="password" asp-for="Password" class="form-control" placeholder="Şifrenizi Giriniz.." />
+                    </div>
+                    <div class="input-group">
+
+                        <label asp-for="RememberMe">Beni Hatırla</label>
+                        <input type="checkbox" asp-for="RememberMe" class="checkbox" />
+                    </div>
+                    <div class="input-group">
+                        <input type="submit" value="Login" class="btn btn-info" />
+                    </div>
+                </form>
+
             </div>
-            <div class="input-group">
-         
-                <label asp-for="RememberMe">Beni Hatırla</label>
-                <input type="checkbox" asp-for="RememberMe" class="checkbox"   />
-            </div>
-            <div class="input-group">
-                <input type="submit" value="Login" class="btn btn-info" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
+</section>

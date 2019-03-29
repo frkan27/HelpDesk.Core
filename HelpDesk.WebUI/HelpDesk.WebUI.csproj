@@ -266,6 +266,22 @@
     <None Include="wwwroot\assets\js\plugins\slick\slick.min.css" />
     <None Include="wwwroot\assets\js\plugins\slick\slick.min.js" />
     <None Include="wwwroot\assets\js\plugins\sparkline\jquery.sparkline.min.js" />
+    <None Include="wwwroot\Content\bootstrap-theme.css.map" />
+    <None Include="wwwroot\Content\bootstrap-theme.min.css.map" />
+    <None Include="wwwroot\Content\bootstrap.css.map" />
+    <None Include="wwwroot\Content\bootstrap.min.css.map" />
+    <None Include="wwwroot\fonts\glyphicons-halflings-regular.svg" />
+    <None Include="wwwroot\fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="wwwroot\Scripts\bootstrap.js" />
+    <None Include="wwwroot\Scripts\bootstrap.min.js" />
+    <None Include="wwwroot\Scripts\jquery-3.1.1.intellisense.js" />
+    <None Include="wwwroot\Scripts\jquery-3.1.1.js" />
+    <None Include="wwwroot\Scripts\jquery-3.1.1.min.js" />
+    <None Include="wwwroot\Scripts\jquery-3.1.1.min.map" />
+    <None Include="wwwroot\Scripts\jquery-3.1.1.slim.js" />
+    <None Include="wwwroot\Scripts\jquery-3.1.1.slim.min.js" />
+    <None Include="wwwroot\Scripts\jquery-3.1.1.slim.min.map" />
+    <None Include="wwwroot\Scripts\modernizr-2.6.2.js" />
   </ItemGroup>
 
   <ItemGroup>
