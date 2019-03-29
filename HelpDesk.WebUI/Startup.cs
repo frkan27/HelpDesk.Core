@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HelpDesk.BLL;
 using HelpDesk.BLL.Repository.Abstracts;
 using HelpDesk.BLL.Repository.RoleUser;
 using HelpDesk.DAL;
@@ -81,6 +82,7 @@ namespace HelpDesk.WebUI
             services.AddScoped<SignInManager<ApplicationUser>, SignInManager<ApplicationUser>>();
             services.AddScoped<UserManager<ApplicationUser>, UserManager<ApplicationUser>>();
             services.AddScoped<RoleManager<ApplicationRole>, RoleManager<ApplicationRole>>();
+            services.AddScoped<MembershipTools, MembershipTools>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddAuthorization(options =>
@@ -111,6 +113,8 @@ namespace HelpDesk.WebUI
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

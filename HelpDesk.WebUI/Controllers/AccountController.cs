@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using HelpDesk.BLL;
 using HelpDesk.BLL.Repository.Abstracts;
 using HelpDesk.Model.ViewModels.UserViewModels;
+using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,7 +15,8 @@ namespace HelpDesk.WebUI.Controllers
     public class AccountController : Controller
     {
         private readonly IRepoIdentity _userRoleRepo;
-     
+        private readonly MembershipTools _membershipTools;
+
 
         public AccountController(IRepoIdentity userRoleRepo)
         {
@@ -21,7 +25,7 @@ namespace HelpDesk.WebUI.Controllers
 
         public IActionResult Index()
         {
-           
+
             return View();
         }
 
@@ -84,5 +88,14 @@ namespace HelpDesk.WebUI.Controllers
             await _userRoleRepo.Logout();
             return RedirectToAction("Index", "Home");
         }
+
+
+        [HttpGet]
+        public ActionResult UserProfile()
+        {
+            return View();
+
+        }
     }
+
 }

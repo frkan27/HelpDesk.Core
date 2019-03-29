@@ -5,12 +5,13 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using HelpDesk.Model.Entities.Poco;
 using HelpDesk.Model.Enums.FaultEnums;
+using Microsoft.AspNetCore.Http;
 
 namespace HelpDesk.Model.ViewModels.FaultViewModels
 {
     public class FaultViewModels
     {
-        {
+        
         public int ArizaId { get; set; }
 
         [Required(ErrorMessage = "Lütfen Açıklama kısmını doldurdunuz.")]
@@ -40,11 +41,11 @@ namespace HelpDesk.Model.ViewModels.FaultViewModels
         [DisplayName("Ürün Resmi Ekleyiniz :")]
         public List<string> ArızaPath { get; set; }
         [DisplayName("Arızali Ürün Resmini Ekleyiniz :")]
-        public List<HttpPostedFileBase> PostedFileAriza { get; set; }
+        public List<IFormFile> PostedFileAriza { get; set; }
         [DisplayName("Fatura Resmini Ekleyiniz")]
         public string FaturaPath { get; set; }
         [DisplayName("Ürünün Fatura Resmini Ekleyiniz.")]
-        public HttpPostedFileBase PostedFileFatura { get; set; }
+        public IFormFile PostedFileFatura { get; set; }
 
 
         //TODO TARİH KISMI

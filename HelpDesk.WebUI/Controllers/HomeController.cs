@@ -1,17 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using HelpDesk.BLL;
 using HelpDesk.WebUI.Models;
+using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HelpDesk.WebUI.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly MembershipTools _membershipTools;
+        public HomeController(MembershipTools membershipTools)
         {
+            _membershipTools = membershipTools;
+        }
+        [Authorize]
+        public async System.Threading.Tasks.Task<IActionResult> Index()
+        {
+            //o an sistemdeki kullanıcı bulma
+            var user = await _membershipTools.UserManager.GetUserAsync(HttpContext.User);
+            if (user != null)
+            {
+                // Id ile user bulma
+                var wuser = await _membershipTools.UserManager.FindByIdAsync(user.Id);
+            }
             return View();
         }
 
