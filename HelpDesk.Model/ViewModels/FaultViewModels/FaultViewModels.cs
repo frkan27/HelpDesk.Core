@@ -78,9 +78,9 @@ namespace HelpDesk.Model.ViewModels.FaultViewModels
 
 
         [Required]
-        public string MusteriId { get; set; }
+        public string CustomerId { get; set; }
         public string OperatorId { get; set; }
-        public string TeknisyenId { get; set; }
+        public string TechnicianId { get; set; }
 
         //TODO arizaLogViewModel için
         public List<FaultLOG> FaultLogs { get; set; }
