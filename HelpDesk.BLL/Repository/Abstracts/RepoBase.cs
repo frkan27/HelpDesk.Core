@@ -44,24 +44,26 @@ namespace HelpDesk.BLL.Repository.Abstracts
             return DbObject.Find(id);
         }
 
-        public void Insert(T entity)
+        public int Insert(T entity)
         {
             DbObject.Add(entity);
-            DbContext.SaveChanges();
+            return DbContext.SaveChanges();
+             
         }
-        public void Delete(T entity)
+        public int Delete(T entity)
         {
             DbObject.Remove(entity);
-            DbContext.SaveChanges();
+            return DbContext.SaveChanges();
         }
 
-        public void Update(T entity)
+        public int Update(T entity)
         {
             DbObject.Attach(entity);
             DbContext.Entry(entity).State = EntityState.Modified;
+            return DbContext.SaveChanges();
         }
 
-        public void Save()
+        public int Save()
         {
             throw new NotImplementedException();
         }

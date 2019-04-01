@@ -13,10 +13,10 @@ namespace HelpDesk.BLL.Repository.Abstracts
         List<T> GetAll(params string[] includes);
         List<T> GetAll(Func<T, bool> predicate, params string[] includes);
         T GetById(TId id);
-        void Insert(T entity);
-        void Update(T entity);
-        void Delete(T entity);
-        void Save();
+        int Insert(T entity);
+        int Update(T entity);
+        int Delete(T entity);
+        int Save();
         IQueryable<T> Queryable();
         IQueryable<T> Queryable(Func<T, bool> predicate);
     }

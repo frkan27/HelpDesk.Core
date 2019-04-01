@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using HelpDesk.BLL;
 using HelpDesk.BLL.Repository.Fault_Repo;
+using HelpDesk.Model.Entities.Poco;
 using HelpDesk.Model.ViewModels.FaultViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,13 +23,16 @@ namespace HelpDesk.WebUI.Controllers
         }
         public IActionResult Index()
         {
-           
+
             return View();
         }
         [HttpPost]
-        public IActionResult FaultAdd(FaultViewModels model)
+        public async Task<IActionResult> FaultAddAsync(FaultViewModels model)
         {
-            
+            var data = Mapper.Map<FaultRecord>(model);
+
+            var res = _fault_repo.FaultAdd(data);
+
             return View();
         }
     }
