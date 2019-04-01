@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using HelpDesk.BLL;
+using HelpDesk.BLL.Repository.Abstracts;
 using HelpDesk.BLL.Repository.Fault_Repo;
 using HelpDesk.Model.Entities.Poco;
 using HelpDesk.Model.ViewModels.FaultViewModels;
@@ -14,12 +15,12 @@ namespace HelpDesk.WebUI.Controllers
     public class CustomerController : Controller
     {
         private readonly MembershipTools _membershipTools;
-        private readonly Fault_Repo _fault_repo;
+        private readonly IRepository<FaultRecord, int> _faultRepo;
 
-        public CustomerController(MembershipTools membershipTools, Fault_Repo fault_repo)
+        public CustomerController(MembershipTools membershipTools, IRepository<FaultRecord, int> faultRepo)
         {
             _membershipTools = membershipTools;
-            _fault_repo = fault_repo;
+            _faultRepo = faultRepo;
         }
         public IActionResult Index()
         {
@@ -30,10 +31,18 @@ namespace HelpDesk.WebUI.Controllers
         public async Task<IActionResult> FaultAddAsync(FaultViewModels model)
         {
             var data = Mapper.Map<FaultRecord>(model);
+            var user = await _membershipTools.UserManager.GetUserAsync(HttpContext.User);
+            data.CreatedUserId = user.Id;
 
-            var res = _fault_repo.FaultAdd(data);
+            var res = (_faultRepo as Fault_Repo).FaultAdd(data);
+            //if (res.Result.Erros.Count > 1)
+            //{
+            //    ModelState.AddModelError("", "Bir Hata olustu");
+            //    return View(model);
+            //}
 
-            return View();
+            TempData["Model"] = $"Kayıt başarılı teşekkürler asdlasdqwe";
+            return View("Index");
         }
     }
 }

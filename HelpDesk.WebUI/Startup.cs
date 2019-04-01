@@ -20,7 +20,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
+using HelpDesk.BLL.Repository.Fault_Repo;
 namespace HelpDesk.WebUI
 {
     public class Startup
@@ -81,10 +81,16 @@ namespace HelpDesk.WebUI
                 options.SlidingExpiration = true;
             });
 
+            //services.AddScoped<IRepository<Issue, string>, IssueRepo>();
+            //services.AddScoped<IRepository<IssueLog, string>, IssueLogRepo>();
+            //services.AddScoped<IRepository<Photograph, string>, PhotographRepo>();
+            //services.AddScoped<IRepository<Survey, string>, SurveyRepo>();
+
             services.AddScoped<IRepoIdentity, RoleUserRepo>();
             services.AddScoped<SignInManager<ApplicationUser>, SignInManager<ApplicationUser>>();
             services.AddScoped<UserManager<ApplicationUser>, UserManager<ApplicationUser>>();
             services.AddScoped<RoleManager<ApplicationRole>, RoleManager<ApplicationRole>>();
+            services.AddScoped<IRepository<FaultRecord,int>,Fault_Repo>();
             services.AddScoped<MembershipTools, MembershipTools>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
@@ -127,7 +133,7 @@ namespace HelpDesk.WebUI
             app.UseCookiePolicy();
 
             app.UseAuthentication();
-            
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

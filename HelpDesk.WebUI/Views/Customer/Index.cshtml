@@ -46,9 +46,9 @@
             </ul>
             <!-- End Step Tabs -->
             <!-- Form -->
-            <form asp-controller="FaultAdd" asp-action="Customer" method="post" class="form-horizontal" ,enctype="mutipart/form-data">
+            <form asp-controller="Customer" asp-action="FaultAddAsync" method="post" class="form-horizontal" ,enctype="mutipart/form-data">
 
-                @Html.AntiForgeryToken()
+                @*@Html.AntiForgeryToken()*@
 
                 @*@Html.Hidden("CustomerId", MembershipTool)*@
                 <!-- Steps Progress -->
@@ -187,6 +187,6 @@
     <!-- Page JS Code -->
     <script src="~/assets/js/pages/base_forms_wizard.js"></script>
 
-    <script type="text/javascript" src="/assets/js/map.js"></script>
+    <script type="text/javascript" src="~/assets/js/map.js"></script>
 }
 
