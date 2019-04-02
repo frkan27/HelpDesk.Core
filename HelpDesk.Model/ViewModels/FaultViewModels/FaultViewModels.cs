@@ -76,8 +76,6 @@ namespace HelpDesk.Model.ViewModels.FaultViewModels
         //TODO Bosta alan teknisyenleri için
         public TechnicianState TechnicianState { get; set; } = TechnicianState.Available;
 
-
-        [Required]
         public string CustomerId { get; set; }
         public string OperatorId { get; set; }
         public string TechnicianId { get; set; }

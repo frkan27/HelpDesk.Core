@@ -53,10 +53,10 @@ function markerLocation() {
     //Get location.
     var currentLocation = marker.getPosition();
     //Add lat and lng values to a field that we can save.
-    document.getElementById('enlem').value = currentLocation.lat(); //latitude
-    document.getElementById('boylam').value = currentLocation.lng(); //longitude
-    document.getElementById('boylam').value = document.getElementById('boylam').value.replace(".", ",");
-    document.getElementById('enlem').value = document.getElementById('enlem').value.replace(".", ",");
+    document.getElementById('latitude').value = currentLocation.lat(); //latitude
+    document.getElementById('longitude').value = currentLocation.lng(); //longitude
+    document.getElementById('longitude').value = document.getElementById('longitude').value.replace(".", ",");
+    document.getElementById('latitude').value = document.getElementById('latitude').value.replace(".", ",");
 }
 
 
@@ -74,8 +74,8 @@ function getLocation() {
     }
 }
 function putPosition(position) {
-    document.getElementById('enlem').value = position.coords.latitude; //latitude
-    document.getElementById('boylam').value = position.coords.longitude; //longitude
-    document.getElementById('boylam').value = document.getElementById('boylam').value.replace(".", ",");
-    document.getElementById('enlem').value = document.getElementById('enlem').value.replace(".", ",");
+    document.getElementById('latitude').value = position.coords.latitude; //latitude
+    document.getElementById('longitude').value = position.coords.longitude; //longitude
+    document.getElementById('longitude').value = document.getElementById('longitude').value.replace(".", ",");
+    document.getElementById('latitude').value = document.getElementById('latitude').value.replace(".", ",");
 }

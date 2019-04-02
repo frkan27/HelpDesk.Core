@@ -30,19 +30,25 @@ namespace HelpDesk.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> FaultAddAsync(FaultViewModels model)
         {
+            //TODO RESİM EKleme Olmumyor Yapılcak.
             var data = Mapper.Map<FaultRecord>(model);
             var user = await _membershipTools.UserManager.GetUserAsync(HttpContext.User);
             data.CreatedUserId = user.Id;
-
             var res = (_faultRepo as Fault_Repo).FaultAdd(data);
-            //if (res.Result.Erros.Count > 1)
-            //{
-            //    ModelState.AddModelError("", "Bir Hata olustu");
-            //    return View(model);
-            //}
+            if (res.Result.Responce > 0)
+            {
 
-            TempData["Model"] = $"Kayıt başarılı teşekkürler asdlasdqwe";
-            return View("Index");
+                TempData["Message"] = $"Kayıt başarılı teşekkürler. Olusturdugunuz kaydı Kayıt Takip Sayfasına giderek tabkip edebilirsiniz.";
+                return View("Index");
+            }
+            else
+            {
+                TempData["Message"] = $"Kayıt başarısız";
+                return View("Index");
+            }
+
+
+
         }
     }
 }

@@ -9,6 +9,7 @@ namespace HelpDesk.BLL
     {
         public List<ErrorMessagaObj> Erros { get; set; }
         public T Result { get; set; }
+        public int Responce { get; set; }
 
         public BussinesLayerResult()
         {

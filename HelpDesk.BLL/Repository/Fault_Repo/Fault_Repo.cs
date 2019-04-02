@@ -17,6 +17,7 @@ namespace HelpDesk.BLL.Repository.Fault_Repo
         private readonly MembershipTools _membershipTools;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
+
         public Fault_Repo(MyContext dbContext, MembershipTools membershipTools) : base(dbContext)
         {
             _dbContext = dbContext;
@@ -27,16 +28,21 @@ namespace HelpDesk.BLL.Repository.Fault_Repo
         public async Task<BussinesLayerResult<FaultRecord>> FaultAdd(FaultRecord data)
         {
             var res = new BussinesLayerResult<FaultRecord>();
+
             //var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name)?.Value;
-            var dbresult = Insert(data);
+           res.Responce = Insert(data);
+        
 
-
-            if (dbresult > 0)
+            if (res.Responce > 0)
             {
-                res.AddError(ErrorMessageCode.FaultRecordNotAdd,"Hata olustu");
+                
                 return res;
             }
-        
+            else
+            {
+                res.AddError(ErrorMessageCode.FaultRecordNotAdd,"Kayıt olusturulamadı.");
+            }
+
             return res;
         }
 

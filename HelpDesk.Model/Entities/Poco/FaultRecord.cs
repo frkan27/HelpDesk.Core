@@ -62,7 +62,6 @@ namespace HelpDesk.Model.Entities.Poco
         // Teknisyen durumu için gerekli alan
         public TechnicianState TechnicianState { get; set; } = TechnicianState.Available;
 
-        [Required]
         public string CustomerId { get; set; }
         public string OperatorId { get; set; }
         public string TechnicianId { get; set; }
