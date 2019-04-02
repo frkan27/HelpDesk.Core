@@ -1,0 +1,101 @@
+﻿@model HelpDesk.Model.ViewModels.FaultViewModels.FaultViewModels
+@{
+    ViewData["Title"] = "FaultDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@section top{
+    <link href="~/assets/css/lightbox.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/assets/js/plugins/slick/slick.min.css" />
+    <link rel="stylesheet" href="~/assets/js/plugins/slick/slick-theme.min.css" />
+}
+<h2 class="text-center">Fault Detail</h2>
+<div class="col-md-6 col-md-offset-3">
+    <div class="card">
+        <div class="card-block tab-content">
+            <div class="tab-pane fade active in" id="profile-tab1">
+                <form asp-controller="Operator" asp-action="FaultRecordAdd" method="post" class="fieldset">
+
+                    @*var data = MembershipTools.GetMusteri(Model.MusteriId);*@
+
+                    <h4 class="m-t-sm m-b">Fault Record Information</h4>
+                    <div class="form-group row">
+                        <div class="col-xs-6">
+                         <label for="Name">Müşterinin Adı</label>
+                           <input type="text" for="data.Name" class="form-control" placeholder="İsim giriniz" />
+                        </div>
+                        <div class="col-xs-6">
+                            @*<label asp-for="Surname">Müşterinin Soyadı</label>
+                            <input type="text" asp-for="Surname" class="form-control" placeholder="Soyisim giriniz" />*@
+                            @*@Html.Label("", "Müşterinin Soyadı")
+        @Html.TextBox("data.Surname", data.Surname, new { @class = "form-control", @readonly = "readonly" })*@
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-xs-6">
+                            @*@Html.Label("", "Müşteri Email")
+                            @Html.TextBox("data.Email", data.Email, new { @class = "form-control", @readonly = "readonly" })*@
+                        </div>
+                        <div class="col-xs-6">
+                            <label asp-for="PhoneNumber">Telefon</label>
+                            <input type="text" asp-for="PhoneNumber" class="form-control" placeholder="Telefon numarası giriniz" />
+                            @*@Html.LabelFor(x => x.Telno)
+                            @Html.TextBoxFor(x => x.Telno, new { @class = "form-control", @readonly = "readonly" })*@
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Adress">Arıza Açıklaması</label>
+                        <input type="text" asp-for="Adress" class="form-control" placeholder="Adres bilgisi giriniz" />
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-xs-6">
+                            @*<div class="js-slider" data-slider-dots="true" data-slider-autoplay="true" data-slider-autoplay-speed="3000">
+        @Html.Label("", "Arızalı Ürün Resimleri")<br />
+        @for (int i = 0; i < Model.ArızaPath.Count; i++)
+        {
+            var cx = Model.ArızaPath[i];
+            <a href="@cx" rel="lightbox">
+                <img src="@cx" class="img-avatar-96" width="100" height="100">
+            </a>
+        }*@
+                            <label asp-for="PostedFileFault">Arıza Resmi</label>
+                            <input type="file" asp-for="PostedFileFault" class="form-control" multiple="true" placeholder="ADRESSSs" />
+                        </div>
+                        </div>
+                    <div class="col-xs-6">
+                        @*@Html.Label("", "Ürün Fatura Bilgisi")
+        <a href="@(string.IsNullOrEmpty(Model.FaturaPath) ? "~/assets/img/avatars/avatar3.jpg" : Model.FaturaPath)" rel="lightbox">
+            <img src="@(string.IsNullOrEmpty(Model.FaturaPath) ? "~/assets/img/avatars/avatar3.jpg" : Model.FaturaPath)" class="img-avatar-96" width="100" height="100" />
+        </a>*@
+                        <label asp-for="PostedFileFatura">Arıza Resmi</label>
+                        <input type="file" asp-for="PostedFileFatura" class="form-control" placeholder="ADRESSSs" />
+                    </div>
+                    </div>
+                    <div class="row narrow-gutter">
+                        <div class="col-xs-12">
+                            @*<a href="@Url.Action("ArizaKabul", "Operator", new {id = Model.ArizaId})" class="btn btn-app btn-block hidden-xs" title="Arıza Kabul">
+                                Arızayı Onayla
+                            </a>*@
+                            <a asp-controller="Operator" asp-action="FaultAccept" class="btn btn-app btn-block" asp-route-id="@Model.FaultId">Fault Accept</a>
+                            @*Id yi nasıl göndercem bulamadım..*@
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- End profile tab 1 -->
+        </div>
+        <!-- .card-block .tab-content -->
+    </div>
+    <!-- .card -->
+</div>
+@section bottom{
+    <script src="~/assets/js/plugins/slick/slick.min.js"></script>
+    <script src="~/assets/js/lightbox-plus-jquery.min.js"></script>
+    <script src="~/assets/js/lightbox.js"></script>
+    <script>$(function () {
+            // Init page helpers (Slick Slider plugin)
+            App.initHelpers('slick');
+        });</script>
+}
