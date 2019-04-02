@@ -24,6 +24,9 @@ namespace HelpDesk.WebUI.Controllers
         }
         public IActionResult Index()
         {
+            var x = UserHelper.GetUserAsync();
+            var xy = UserHelper.GetUser();
+        
 
             return View();
         }
@@ -32,6 +35,7 @@ namespace HelpDesk.WebUI.Controllers
         {
             //TODO RESİM EKleme Olmumyor Yapılcak.
             var data = Mapper.Map<FaultRecord>(model);
+
             var user = await _membershipTools.UserManager.GetUserAsync(HttpContext.User);
             data.CreatedUserId = user.Id;
             var res = (_faultRepo as Fault_Repo).FaultAdd(data);

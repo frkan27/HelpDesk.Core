@@ -1,6 +1,9 @@
 ﻿
+@using System.Net.Http
+@using System.Security.Claims
 @using HelpDesk.BLL
 @using HelpDesk.Model.Enums.FaultEnums
+@inject MembershipTools membershipTools
 
 @model HelpDesk.Model.ViewModels.FaultViewModels.FaultViewModels
 
@@ -8,6 +11,8 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+   
+
 }
 
 @section top{
@@ -50,7 +55,8 @@
 
                 @*@Html.AntiForgeryToken()*@
 
-                @*@Html.Hidden("CustomerId", MembershipTool)*@
+                @*@Html.Hidden("CustomerId", await membershipTools.UserManager.GetUserAsync(HttpContext.User))
+                    @Html.Hidden("CustomerId", await membershipTools.UserManager.GetUserId(ClaimsPrincipal.Current.Identity.Name))*@
                 <!-- Steps Progress -->
                 <div class="card-block b-b">
                     <div class="wizard-progress progress progress-mini m-b-0">
@@ -66,25 +72,25 @@
                         <div class="form-group">
                             <div class="col-sm-8 col-sm-offset-2">
                                 <label asp-for="BeyazEsya">Esya Tipi</label>
-                                <select class="form-control"  size="1"  asp-items="Html.GetEnumSelectList(typeof (Brand))"></select>
+                                <select class="form-control" size="1" asp-items="Html.GetEnumSelectList(typeof (Brand))"></select>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-8 col-sm-offset-2">
                                 <label asp-for="Email">Email</label>
-                                <input type="text" asp-for="Email" class="form-control"  placeholder="Güncel E-posta Adresini Giriniz." />
+                                <input type="text" asp-for="Email" class="form-control" placeholder="Güncel E-posta Adresini Giriniz." />
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-8 col-sm-offset-2">
                                 <label asp-for="PhoneNumber">Telefon</label>
-                                <input type="text" asp-for="PhoneNumber" class="form-control"  placeholder="Telefon numaranızı giriniz." />
+                                <input type="text" asp-for="PhoneNumber" class="form-control" placeholder="Telefon numaranızı giriniz." />
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-8 col-sm-offset-2">
                                 <label asp-for="FaultDescription">Arıza Açıklaması</label>
-                                <input type="text" asp-for="FaultDescription" class="form-control"  placeholder="Lütfen Arıza Hakkında Açıklama Yapiniz" />
+                                <input type="text" asp-for="FaultDescription" class="form-control" placeholder="Lütfen Arıza Hakkında Açıklama Yapiniz" />
                             </div>
                         </div>
                     </div>
@@ -95,20 +101,20 @@
 
                             <div class="col-sm-8 col-sm-offset-2">
                                 <label asp-for="Adress">Arıza Açıklaması</label>
-                                <input type="text" asp-for="Adress" class="form-control"  placeholder="ADRESSSs" />
+                                <input type="text" asp-for="Adress" class="form-control" placeholder="ADRESSSs" />
                                 @*TODO BURADA HARİTA İŞLEMLERİ OLCAK NORMALDE*@
                             </div>
                         </div>
                         <div class="form-group">
                             <label asp-for="latitude">Enlem</label>
                             <div class="col-sm-10">
-                                <input type="text" asp-for="latitude" class="form-control" id="latitude" readonly="readonly"/>
+                                <input type="text" asp-for="latitude" class="form-control" id="latitude" readonly="readonly" />
                             </div>
                         </div>
                         <div class="form-group">
                             <label asp-for="longitude">Enlem</label>
                             <div class="col-sm-10">
-                                <input type="text" asp-for="longitude" class="form-control" id="longitude" readonly="readonly"/>
+                                <input type="text" asp-for="longitude" class="form-control" id="longitude" readonly="readonly" />
                             </div>
                         </div>
                         <div id="map"></div>
@@ -124,7 +130,7 @@
                             <div class="col-sm-8 col-sm-offset-2">
                                 <label asp-for="PostedFileFault">Arıza Resmi</label>
                                 <input type="file" asp-for="PostedFileFault" class="form-control" multiple="true" placeholder="ADRESSSs" />
-                            
+
                             </div>
                         </div>
                         <div class="form-group">

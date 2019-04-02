@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Text;
 
 namespace HelpDesk.BLL
@@ -15,6 +16,11 @@ namespace HelpDesk.BLL
         {
             _userManager = userManager;
             _signInManager = signInManager;
+        }
+
+        public async System.Threading.Tasks.Task<ApplicationUser> GetCurrentUser(ClaimsPrincipal userClaims)
+        {
+            return await _userManager.GetUserAsync(userClaims);
         }
 
         public UserManager<ApplicationUser> UserManager

@@ -1,4 +1,22 @@
-﻿@{
+﻿@using System.Net.Http
+@using HelpDesk.BLL
+@using Microsoft.AspNetCore.Http
+@inject MembershipTools membership
+
+@{
     ViewData["Title"] = "Home Page";
     Layout = "_Layout";
+    var user = membership.GetCurrentUser(User);
+    if (user != null)
+    {
+        Console.WriteLine();
+    }
+
+
 }
+
+<p> @user.Result.Name</p>
+
+<p> @user.Result.Name</p>
+<p> @user.Result.Name</p>
+<p> @user.Result.Name</p><p> @user.Result.Name</p><p> @user.Result.Surname</p>
