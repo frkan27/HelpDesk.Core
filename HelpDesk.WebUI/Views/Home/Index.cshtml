@@ -11,7 +11,7 @@
     {
         Console.WriteLine();
     }
-
+    var user2 = membership.GetUserWithId(user.Result.Id);
 
 }
 
@@ -20,3 +20,5 @@
 <p> @user.Result.Name</p>
 <p> @user.Result.Name</p>
 <p> @user.Result.Name</p><p> @user.Result.Name</p><p> @user.Result.Surname</p>
+
+<p>@user2.Result.Email</p>

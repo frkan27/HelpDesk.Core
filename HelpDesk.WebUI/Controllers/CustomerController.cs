@@ -24,10 +24,7 @@ namespace HelpDesk.WebUI.Controllers
         }
         public IActionResult Index()
         {
-            var x = UserHelper.GetUserAsync();
-            var xy = UserHelper.GetUser();
         
-
             return View();
         }
         [HttpPost]

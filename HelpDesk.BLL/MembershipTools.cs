@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace HelpDesk.BLL
 {
@@ -18,11 +19,15 @@ namespace HelpDesk.BLL
             _signInManager = signInManager;
         }
 
-        public async System.Threading.Tasks.Task<ApplicationUser> GetCurrentUser(ClaimsPrincipal userClaims)
+        public async Task<ApplicationUser> GetCurrentUser(ClaimsPrincipal userClaims)
         {
             return await _userManager.GetUserAsync(userClaims);
         }
 
+        public async Task<ApplicationUser> GetUserWithId(string Id)
+        {
+            return await _userManager.FindByIdAsync(Id);
+        }
         public UserManager<ApplicationUser> UserManager
         {
             get { return _userManager; }
