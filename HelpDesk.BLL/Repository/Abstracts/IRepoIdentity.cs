@@ -12,5 +12,6 @@ namespace HelpDesk.BLL.Repository.Abstracts
         Task Logout();
         Task CreateRoles();
         Task AddRole(ApplicationUser user);
+        Task SendActivationMail(string SiteUrl, CreateUserResultViewModel user);
     }
 }

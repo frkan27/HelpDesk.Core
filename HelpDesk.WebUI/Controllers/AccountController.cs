@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using HelpDesk.BLL;
 using HelpDesk.BLL.Repository.Abstracts;
 using HelpDesk.Model.ViewModels.UserViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -36,6 +37,8 @@ namespace HelpDesk.WebUI.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (!ModelState.IsValid)
@@ -44,10 +47,22 @@ namespace HelpDesk.WebUI.Controllers
             }
 
             var result = await _userRoleRepo.RegisterUser(model);
+
+            var uri = new UriBuilder()
+            {
+                Scheme = Uri.UriSchemeHttps
+            };
+            var hostComponents = Request.Host.ToUriComponent();
+            string SiteUrl = uri.Scheme + System.Uri.SchemeDelimiter + hostComponents;
+
+
             if (result.IdentityResult.Succeeded)
             {
+
                 await _userRoleRepo.CreateRoles();
                 await _userRoleRepo.AddRole(result.User);
+                await _userRoleRepo.SendActivationMail(SiteUrl, result);
+                TempData["Message"] = "Kaydınız alınmıştır. Lütfen giriş yapınız ve Mailinizi kontrol ediniz.s";
                 return RedirectToAction(nameof(Login));
             }
             else
@@ -61,6 +76,7 @@ namespace HelpDesk.WebUI.Controllers
                 ModelState.AddModelError(String.Empty, errorMsg);
                 return View(model);
             }
+
         }
 
         [HttpGet]

@@ -83,7 +83,7 @@
                     <li class="dropdown dropdown-profile">
                         <a href="javascript:void(0)" data-toggle="dropdown">
                             <span class="m-r-sm">John Doe <span class="caret"></span></span>
-                            <img class="img-avatar img-avatar-48" src="assets/img/avatars/avatar3.jpg" alt="User profile pic" />
+                            <img class="img-avatar img-avatar-48" src="~/Image/default.jpg" alt="User profile pic" />
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right">
                             <li class="dropdown-header">
@@ -96,7 +96,7 @@
                                 <a href="base_pages_profile.html"><span class="badge badge-success pull-right">3</span> Blog</a>
                             </li>
                             <li>
-                                <a href="frontend_login_signup.html">Logout</a>
+                                <a asp-controller="Account" asp-action="Logout">Logout</a>
                             </li>
                         </ul>
                     </li>

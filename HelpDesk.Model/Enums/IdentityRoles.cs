@@ -3,7 +3,7 @@
     public enum IdentityRoles
     {
         Admin,
-        User,
+        Customer,
         Technician,
         Operator,
 

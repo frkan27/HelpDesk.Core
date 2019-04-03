@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HelpDesk.BLL.Helper;
 using HelpDesk.BLL.Repository.Abstracts;
+using HelpDesk.BLL.Service.Sender;
 using HelpDesk.DAL;
 using HelpDesk.Model.Enums;
 using HelpDesk.Model.IdentityEntities;
+using HelpDesk.Model.ViewModels;
 using HelpDesk.Model.ViewModels.UserViewModels;
 using Microsoft.AspNetCore.Identity;
 
@@ -18,13 +21,16 @@ namespace HelpDesk.BLL.Repository.RoleUser
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly MyContext DbContext;
+        private EMailService _emailService;
 
-        public RoleUserRepo(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, MyContext dbContext)
+
+        public RoleUserRepo(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, MyContext dbContext, EMailService emailService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _roleManager = roleManager;
             DbContext = dbContext;
+            _emailService = emailService;
         }
 
 
@@ -42,7 +48,10 @@ namespace HelpDesk.BLL.Repository.RoleUser
                 Email = model.Email,
                 Name = model.Name,
                 Surname = model.Surname,
-                UserName = model.UserName
+                UserName = model.UserName,
+                ActivationCode = StringHelpers.GetCode(),
+                AvatarPath = "~/Image/default.jpg",
+
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
@@ -72,14 +81,20 @@ namespace HelpDesk.BLL.Repository.RoleUser
         {
             if (_userManager.Users.Count() == 1)
             {
-                var result = await _userManager.AddToRoleAsync(user, IdentityRoles.Admin.ToString());
+                var result = await _userManager.AddToRoleAsync(user, IdentityRoles.Customer.ToString());
             }
             else
             {
-                var result = await _userManager.AddToRoleAsync(user, IdentityRoles.User.ToString());
+                var result = await _userManager.AddToRoleAsync(user, IdentityRoles.Customer.ToString());
             }
         }
 
+        public async Task SendActivationMail(string SiteUrl, CreateUserResultViewModel user)
+        {
+
+            var body = $"Merhaba <b>{user.User.Name} {user.User.Surname}</b><br>Hesabınızı aktif etmek için aşağıdaki linke tıklayınız<br> <a href='{SiteUrl}/account/activation?code={user.User.ActivationCode}' >Aktivasyon Linki </a> ";
+            await _emailService.SendAsync(new MailModel() { Body = body, Subject = "Sitemize Hoşgeldiniz" }, user.User.Email);
+        }
         public async Task Logout()
         {
             await _signInManager.SignOutAsync();

@@ -21,6 +21,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using HelpDesk.BLL.Repository.Fault_Repo;
+using HelpDesk.BLL.Service.Sender;
+
 namespace HelpDesk.WebUI
 {
     public class Startup
@@ -90,8 +92,9 @@ namespace HelpDesk.WebUI
             services.AddScoped<SignInManager<ApplicationUser>, SignInManager<ApplicationUser>>();
             services.AddScoped<UserManager<ApplicationUser>, UserManager<ApplicationUser>>();
             services.AddScoped<RoleManager<ApplicationRole>, RoleManager<ApplicationRole>>();
-            services.AddScoped<IRepository<FaultRecord,int>,Fault_Repo>();
+            services.AddScoped<IRepository<FaultRecord, int>, Fault_Repo>();
             services.AddScoped<MembershipTools, MembershipTools>();
+            services.AddScoped<EMailService, EMailService>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddAutoMapper();
@@ -106,7 +109,7 @@ namespace HelpDesk.WebUI
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("RequireUserRole",
-                    policy => policy.RequireRole(IdentityRoles.User.ToString()));
+                    policy => policy.RequireRole(IdentityRoles.Customer.ToString()));
             });
         }
         private void MapConfig(IMapperConfigurationExpression cfg)
