@@ -95,6 +95,7 @@ namespace HelpDesk.WebUI
             services.AddScoped<IRepository<FaultRecord, int>, Fault_Repo>();
             services.AddScoped<MembershipTools, MembershipTools>();
             services.AddScoped<EMailService, EMailService>();
+            services.AddScoped<RoleUserRepo, RoleUserRepo>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddAutoMapper();

@@ -99,5 +99,8 @@ namespace HelpDesk.BLL.Repository.RoleUser
         {
             await _signInManager.SignOutAsync();
         }
+
+    
+
     }
 }
