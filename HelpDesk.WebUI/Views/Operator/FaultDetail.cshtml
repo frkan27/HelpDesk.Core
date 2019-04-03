@@ -1,4 +1,6 @@
 ﻿@model HelpDesk.Model.ViewModels.FaultViewModels.FaultViewModels
+@using HelpDesk.BLL
+@inject MembershipTools membership
 @{
     ViewData["Title"] = "FaultDetail";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -17,7 +19,7 @@
             <div class="tab-pane fade active in" id="profile-tab1">
                 <form asp-controller="Operator" asp-action="FaultRecordAdd" method="post" class="fieldset">
 
-                    @*var data = MembershipTools.GetMusteri(Model.MusteriId);*@
+                    @*var data = membership.GetUserWithId(User.Result.CustomerId);*@
 
                     <h4 class="m-t-sm m-b">Fault Record Information</h4>
                     <div class="form-group row">
@@ -26,22 +28,18 @@
                            <input type="text" for="data.Name" class="form-control" placeholder="İsim giriniz" />
                         </div>
                         <div class="col-xs-6">
-                            @*<label asp-for="Surname">Müşterinin Soyadı</label>
-                            <input type="text" asp-for="Surname" class="form-control" placeholder="Soyisim giriniz" />*@
-                            @*@Html.Label("", "Müşterinin Soyadı")
-        @Html.TextBox("data.Surname", data.Surname, new { @class = "form-control", @readonly = "readonly" })*@
+                            <label for="Surname">Müşterinin Soyadı</label>
+                            <input type="text" for="Surname" class="form-control" placeholder="Soyisim giriniz" />                          
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-xs-6">
-                            @*@Html.Label("", "Müşteri Email")
-                            @Html.TextBox("data.Email", data.Email, new { @class = "form-control", @readonly = "readonly" })*@
+                            <label for="Email">Müşterinin Maili</label>
+                            <input type="text" for="Email" class="form-control" placeholder="Mail giriniz" />                         
                         </div>
                         <div class="col-xs-6">
                             <label asp-for="PhoneNumber">Telefon</label>
-                            <input type="text" asp-for="PhoneNumber" class="form-control" placeholder="Telefon numarası giriniz" />
-                            @*@Html.LabelFor(x => x.Telno)
-                            @Html.TextBoxFor(x => x.Telno, new { @class = "form-control", @readonly = "readonly" })*@
+                            <input type="text" asp-for="PhoneNumber" class="form-control" placeholder="Telefon numarası giriniz" />                         
                         </div>
                     </div>
                     <div class="form-group">
@@ -51,24 +49,13 @@
 
                     <div class="form-group row">
                         <div class="col-xs-6">
-                            @*<div class="js-slider" data-slider-dots="true" data-slider-autoplay="true" data-slider-autoplay-speed="3000">
-        @Html.Label("", "Arızalı Ürün Resimleri")<br />
-        @for (int i = 0; i < Model.ArızaPath.Count; i++)
-        {
-            var cx = Model.ArızaPath[i];
-            <a href="@cx" rel="lightbox">
-                <img src="@cx" class="img-avatar-96" width="100" height="100">
-            </a>
-        }*@
+                          
                             <label asp-for="PostedFileFault">Arıza Resmi</label>
                             <input type="file" asp-for="PostedFileFault" class="form-control" multiple="true" placeholder="ADRESSSs" />
                         </div>
                         </div>
                     <div class="col-xs-6">
-                        @*@Html.Label("", "Ürün Fatura Bilgisi")
-        <a href="@(string.IsNullOrEmpty(Model.FaturaPath) ? "~/assets/img/avatars/avatar3.jpg" : Model.FaturaPath)" rel="lightbox">
-            <img src="@(string.IsNullOrEmpty(Model.FaturaPath) ? "~/assets/img/avatars/avatar3.jpg" : Model.FaturaPath)" class="img-avatar-96" width="100" height="100" />
-        </a>*@
+                      
                         <label asp-for="PostedFileFatura">Arıza Resmi</label>
                         <input type="file" asp-for="PostedFileFatura" class="form-control" placeholder="ADRESSSs" />
                     </div>
