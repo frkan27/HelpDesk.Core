@@ -28,6 +28,11 @@ namespace HelpDesk.BLL
         {
             return await _userManager.FindByIdAsync(Id);
         }
+
+        public async Task<ApplicationUser> GetUserWithMail(string mail)
+        {
+            return await _userManager.FindByEmailAsync(mail);
+        }
         public UserManager<ApplicationUser> UserManager
         {
             get { return _userManager; }

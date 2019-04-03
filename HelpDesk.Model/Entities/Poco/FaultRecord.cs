@@ -61,6 +61,10 @@ namespace HelpDesk.Model.Entities.Poco
 
         // Teknisyen durumu için gerekli alan
         public TechnicianState TechnicianState { get; set; } = TechnicianState.Available;
+        public TechnicianFailureStatus? TechnicianFailureStatus { get; set; }
+        public FaultCondition FaultCondition { get; set; } = FaultCondition.Waiting;
+        public string TechnicialFaultDescription { get; set; }
+
 
         public string CustomerId { get; set; }
         public string OperatorId { get; set; }
