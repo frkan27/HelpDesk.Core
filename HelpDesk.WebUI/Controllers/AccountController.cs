@@ -19,8 +19,9 @@ namespace HelpDesk.WebUI.Controllers
         private readonly MembershipTools _membershipTools;
 
 
-        public AccountController(IRepoIdentity userRoleRepo)
+        public AccountController(IRepoIdentity userRoleRepo, MembershipTools membershipTools)
         {
+            _membershipTools = membershipTools;
             _userRoleRepo = userRoleRepo;
         }
 
@@ -107,9 +108,39 @@ namespace HelpDesk.WebUI.Controllers
 
 
         [HttpGet]
-        public ActionResult UserProfile()
+        public async Task<ActionResult> UserProfileAsync()
         {
-            return View();
+            try
+            {
+                //MVCDEki HTTPCONTEXT gitti sadece context kaldı . context. diyincede olur
+                var  UserId = await _membershipTools.GetCurrentUser(User);
+
+                var data = new ProfilePasswordViewModel()
+                {
+                    UserProfileViewModel = new UserProfileViewModel()
+                    {
+                        Email = user.Email,
+                        Id = user.Id,
+                        Name = user.Name,
+                        PhoneNumber = user.PhoneNumber,
+                        Surname = user.Surname,
+                        UserName = user.UserName,
+                        AvatarPath = string.IsNullOrEmpty(user.AvatarPath) ? "/assets/img/avatars/avatar3.jpg" : user.AvatarPath
+                    }
+                };
+                return View(data);
+            }
+            catch (Exception ex)
+            {
+                TempData["Model"] = new ErrorViewModel()
+                {
+                    Text = $"Bir hata oluştu {ex.Message}",
+                    ActionName = "UserProfile",
+                    ControllerName = "Account",
+                    ErrorCode = 500
+                };
+                return RedirectToAction("Error", "Home");
+            }
 
         }
     }
