@@ -2,22 +2,55 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using HelpDesk.BLL;
+using HelpDesk.BLL.Repository;
+using HelpDesk.BLL.Repository.Abstracts;
+using HelpDesk.Model.Entities.Poco;
+using HelpDesk.Model.ViewModels.FaultViewModels;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Design;
 
 namespace HelpDesk.WebUI.Controllers
 {
     public class OperatorController : Controller
     {
+        private readonly IRepoIdentity _userRoleRepo;
+        private readonly MembershipTools _membershipTools;
+        private readonly Operator_Repo _operatorRepo;
+        private readonly IHostingEnvironment _hostingEnvironment;
+
+        public OperatorController(IRepoIdentity userRoleRepo, MembershipTools membershipTools, Operator_Repo operatorRepo, IHostingEnvironment hostingEnvironment)
+        {
+            _userRoleRepo = userRoleRepo;
+            _membershipTools = membershipTools;
+            _operatorRepo = operatorRepo;
+            _hostingEnvironment = hostingEnvironment;
+        }
+
         public IActionResult Index()
         {
+
+            var UnapprovedRecords = _operatorRepo.GetUnApproveRecords();
             //var data = new ArizaKayitRepo()
             //   .GetAll(x => x.OperatorKabul == false)
             //   .Select(x => Mapper.Map<ArizaViewModel>(x))
             //   .ToList();
+            if (UnapprovedRecords == null)
+            {
+                TempData["Message"] = "Bir hata oluştu. Tekrar Deneyiniz";
+                return View();
+            }
+            else
+            {
+                var data = Mapper.Map<List<FaultViewModels>>(UnapprovedRecords);
 
+                return View(data);
+            }
             //return View(data);
 
-            return View();
+           
         }
 
         [HttpGet]
