@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ using HelpDesk.Model.Enums;
 using HelpDesk.Model.IdentityEntities;
 using HelpDesk.Model.ViewModels;
 using HelpDesk.Model.ViewModels.UserViewModels;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 
 namespace HelpDesk.BLL.Repository.RoleUser
@@ -21,19 +23,19 @@ namespace HelpDesk.BLL.Repository.RoleUser
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly MyContext DbContext;
-        private EMailService _emailService;
+        private readonly MembershipTools _membershipTools;
+        private readonly EMailService _emailService;
+        private readonly RoleUserRepo _roleUserRepo;
 
-
-        public RoleUserRepo(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, MyContext dbContext, EMailService emailService)
+        public RoleUserRepo(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, MyContext dbContext, MembershipTools membershipTools, EMailService emailService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _roleManager = roleManager;
             DbContext = dbContext;
+            _membershipTools = membershipTools;
             _emailService = emailService;
         }
-
-
 
         public async Task<SignInResult> LoginUser(LoginViewModel model)
         {
@@ -50,7 +52,7 @@ namespace HelpDesk.BLL.Repository.RoleUser
                 Surname = model.Surname,
                 UserName = model.UserName,
                 ActivationCode = StringHelpers.GetCode(),
-                AvatarPath = "~/Image/default.jpg",
+                AvatarPath = "/Image/default.jpg",
 
             };
 
@@ -100,7 +102,7 @@ namespace HelpDesk.BLL.Repository.RoleUser
             await _signInManager.SignOutAsync();
         }
 
-    
+
 
     }
 }

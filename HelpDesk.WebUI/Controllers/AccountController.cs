@@ -8,6 +8,7 @@ using HelpDesk.BLL;
 using HelpDesk.BLL.Helper;
 using HelpDesk.BLL.Repository.Abstracts;
 using HelpDesk.BLL.Repository.RoleUser;
+using HelpDesk.BLL.Service.Sender;
 using HelpDesk.Model.ViewModels;
 using HelpDesk.Model.ViewModels.UserViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -124,9 +125,9 @@ namespace HelpDesk.WebUI.Controllers
             {
                 //MVCDEki HTTPCONTEXT gitti sadece context kaldı . context. diyincede olur
                 var user = await _membershipTools.GetCurrentUser(User);
-                var data =  _membershipTools.ConvertProfile(user);
+                var data = _membershipTools.ConvertProfile(user);
 
-               
+
                 return View(data);
             }
             catch (Exception ex)
@@ -145,18 +146,10 @@ namespace HelpDesk.WebUI.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> UpdateProfile(UserProfileViewModel model)
+        public async Task<ActionResult> UpdateProfile(ProfilePasswordViewModel _model)
         {
+            var model = _model.UserProfileViewModel;
             var user = await _membershipTools.UserManager.FindByIdAsync(model.Id);
-            //var oldPath = user.AvatarPath;
-            //if (oldPath != null || oldPath != "")
-            //{
-            //    System.IO.File.Delete(oldPath);
-            //}
-            if (!ModelState.IsValid)
-            {
-                return View("UserProfile", model);
-            }
 
             if (model.PostedFile != null &&
                    model.PostedFile.Length > 0)
@@ -209,75 +202,74 @@ namespace HelpDesk.WebUI.Controllers
                     ControllerName = "Account",
                     ErrorCode = 500
                 };
-                return RedirectToAction("Error500", "Home");
+                return View("UserProfile", _model);
             }
+
         }
 
 
         //TODO BURADAN SONRASI KONTROL EDİLECEK
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //[Authorize]
-        //public async Task<ActionResult> ChangePassword(ProfilePasswordViewModel model)
-        //{
-        //    try
-        //    {
-        //        var userManager = NewUserManager();
-        //        var id = HttpContext.GetOwinContext().Authentication.User.Identity.GetUserId();
-        //        var user = NewUserManager().FindById(id);
-        //        var data = new ProfilePasswordViewModel()
-        //        {
-        //            UserProfileViewModel = new UserProfileViewModel()
-        //            {
-        //                Email = user.Email,
-        //                Id = user.Id,
-        //                Name = user.Name,
-        //                PhoneNumber = user.PhoneNumber,
-        //                Surname = user.Surname,
-        //                UserName = user.UserName
-        //            }
-        //        };
-        //        model.UserProfileViewModel = data.UserProfileViewModel;
-        //        if (!ModelState.IsValid)
-        //        {
-        //            model.ChangePasswordViewModel = new ChangePasswordViewModel();
-        //            return View("UserProfile", model);
-        //        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<ActionResult> ChangePassword(ProfilePasswordViewModel _model)
+        {
+            var model = _model.ChangePasswordViewModel;
 
+            try
+            {
+                var user = await _membershipTools.UserManager.GetUserAsync(HttpContext.User);
 
-        //        var result = await userManager.ChangePasswordAsync(
-        //            HttpContext.GetOwinContext().Authentication.User.Identity.GetUserId(),
-        //            model.ChangePasswordViewModel.OldPassword, model.ChangePasswordViewModel.NewPassword);
+                //var id = _membershipTools.IHttpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name)?.Value;
+                //var user = await _membershipTools.UserManager.FindByIdAsync(id);
 
-        //        if (result.Succeeded)
-        //        {
-        //            //todo kullanıcıyı bilgilendiren bir mail atılır
-        //            return RedirectToAction("Logout", "Account");
-        //        }
-        //        else
-        //        {
-        //            var err = "";
-        //            foreach (var resultError in result.Errors)
-        //            {
-        //                err += resultError + " ";
-        //            }
-        //            ModelState.AddModelError("", err);
-        //            model.ChangePasswordViewModel = new ChangePasswordViewModel();
-        //            return View("UserProfile", model);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        TempData["Model"] = new ErrorViewModel()
-        //        {
-        //            Text = $"Bir hata oluştu {ex.Message}",
-        //            ActionName = "UserProfile",
-        //            ControllerName = "Account",
-        //            ErrorCode = 500
-        //        };
-        //        return RedirectToAction("Error", "Home");
-        //    }
-        //}
+                var data = new ChangePasswordViewModel()
+                {
+                    OldPassword = model.OldPassword,
+                    NewPassword = model.NewPassword,
+                    ConfirmNewPassword = model.ConfirmNewPassword
+                };
+
+                model = data;
+                if (!ModelState.IsValid)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+                var result = await _membershipTools.UserManager.ChangePasswordAsync(await _membershipTools.UserManager.GetUserAsync(HttpContext.User),
+                    model.OldPassword, model.NewPassword);
+
+                if (result.Succeeded)
+                {
+                    var emailService = new EMailService();
+                    var body = $"Merhaba <b>{user.Name} {user.Surname}</b><br>Hesabınızın şifresi değiştirilmiştir. <br> Bilginiz dahilinde olmayan değişiklikler için hesabınızı güvence altına almanızı öneririz.</p>";
+                    emailService.Send(new MailModel() { Body = body, Subject = "Şifre Değiştirme hk." }, user.Email);
+
+                    return RedirectToAction("Logout", "Account");
+                }
+                else
+                {
+                    var err = "";
+                    foreach (var resultError in result.Errors)
+                    {
+                        err += resultError + " ";
+                    }
+                    ModelState.AddModelError("", err);
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["Message"] = new ErrorViewModel()
+                {
+                    Text = $"Bir hata oluştu {ex.Message}",
+                    ActionName = "ChangePassword",
+                    ControllerName = "Account",
+                    ErrorCode = 500
+                };
+                return RedirectToAction("Error500", "Home");
+            }
+        }
 
         //[HttpGet]
         //[AllowAnonymous]

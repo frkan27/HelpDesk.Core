@@ -9,15 +9,15 @@
     var user = membershipTools.GetCurrentUser(User);
 }
 <div class="card card-profile">
-    <div class="card-profile-img bg-img" style="background-image: "~/assets/img/misc/base_pages_profile_header_bg.jpg";">
+    <div class="card-profile-img bg-img" style="background-image: " ~/assets/img/misc/base_pages_profile_header_bg.jpg";">
+</div>
+<div class="card-block card-profile-block text-xs-center text-sm-left">
+    <img class="img-avatar img-avatar-96" src="@Model.UserProfileViewModel.AvatarPath" alt="" />
+    <div class="profile-info font-500">
+        @user.Result.Name - @Model.UserProfileViewModel.UserName
+        <div class="small text-muted m-t-xs">@Model.UserProfileViewModel.Email</div>
     </div>
-    <div class="card-block card-profile-block text-xs-center text-sm-left">
-        <img class="img-avatar img-avatar-96" src="@Model.UserProfileViewModel.AvatarPath" alt="" />
-        <div class="profile-info font-500">
-          @user.Result.Name - @Model.UserProfileViewModel.UserName
-            <div class="small text-muted m-t-xs">@Model.UserProfileViewModel.Email</div>
-        </div>
-    </div>
+</div>
 </div>
 <div class="row">
     <div class="col-md-4">
@@ -54,36 +54,36 @@
             <div class="card-block tab-content">
                 <!-- Profile tab 1 -->
                 <div class="tab-pane fade in active" id="profile-tab1">
-                    @using (Html.BeginForm("UpdateProfile", "Account", FormMethod.Post, new { @class = "fieldset", enctype = "multipart/form-data" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        @Html.HiddenFor(x => x.UserProfileViewModel.Id)
-                        @Html.HiddenFor(x => x.UserProfileViewModel.UserName)
+                    @Html.ValidationSummary(false)
+                    <form asp-controller="Account" asp-action="UpdateProfile" method="post" class="fieldset" enctype="multipart/form-data">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <input asp-for="UserProfileViewModel.Id" type="hidden" />
+                        <input asp-for="UserProfileViewModel.Name" type="hidden" />
                         <h4 class="m-t-sm m-b">Profil Bilgileri</h4>
                         <div class="form-group row">
                             <div class="col-xs-6">
-                                @Html.LabelFor(x => x.UserProfileViewModel.Name)
-                                @Html.TextBoxFor(x => x.UserProfileViewModel.Name, new { @class = "form-control" })
+                                <label asp-for="UserProfileViewModel.Name"></label>
+                                <input type="text" asp-for="UserProfileViewModel.UserName" class="form-control" />
                             </div>
                             <div class="col-xs-6">
-                                @Html.LabelFor(x => x.UserProfileViewModel.Surname)
-                                @Html.TextBoxFor(x => x.UserProfileViewModel.Surname, new { @class = "form-control" })
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-xs-6">
-                                @Html.LabelFor(x => x.UserProfileViewModel.Email)
-                                @Html.TextBoxFor(x => x.UserProfileViewModel.Email, new { @class = "form-control", type = "email" })
-                            </div>
-                            <div class="col-xs-6">
-                                @Html.LabelFor(x => x.UserProfileViewModel.PhoneNumber)
-                                @Html.TextBoxFor(x => x.UserProfileViewModel.PhoneNumber, new { @class = "form-control" })
+                                <label asp-for="UserProfileViewModel.Surname"></label>
+                                <input type="text" asp-for="UserProfileViewModel.Surname" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group row">
                             <div class="col-xs-6">
-                                @Html.LabelFor(x => x.UserProfileViewModel.PostedFile)
-                                @Html.TextBoxFor(x => x.UserProfileViewModel.PostedFile, new { @class = "form-control", type = "file", multiple = false })
+                                <label asp-for="UserProfileViewModel.Email"></label>
+                                <input type="text" asp-for="UserProfileViewModel.Email" class="form-control" />
+                            </div>
+                            <div class="col-xs-6">
+                                <label asp-for="UserProfileViewModel.PhoneNumber"></label>
+                                <input type="text" asp-for="UserProfileViewModel.PhoneNumber" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-xs-6">
+                                <label asp-for="UserProfileViewModel.PostedFile"></label>
+                                <input asp-for="UserProfileViewModel.PostedFile" class="form-control" type="file" multiple="false" />
                             </div>
                         </div>
                         <div class="row narrow-gutter">
@@ -91,29 +91,30 @@
                                 <button type="submit" class="btn btn-primary btn-block">Güncelle</button>
                             </div>
                         </div>
-                    }
+                    </form>
+
                 </div>
                 <!-- End profile tab 1 -->
                 <!-- Profile tab 2 -->
                 <div class="tab-pane fade" id="profile-tab2">
-                    @using (Html.BeginForm("ChangePassword", "Account", FormMethod.Post, new { @class = "fieldset" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <h4 class="m-t-sm m-b">Profil Bilgileri</h4>
+                    <form asp-controller="Account" asp-action="ChangePassword" method="post" class="fieldset">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <h4 class="m-t-sm m-b">Şifre Deiştirme</h4>
                         <div class="form-group row">
                             <div class="col-xs-6">
-                                @Html.LabelFor(x => x.ChangePasswordViewModel.OldPassword)
-                                @Html.TextBoxFor(x => x.ChangePasswordViewModel.OldPassword, new { @class = "form-control", type = "password" })
+                                <label asp-for="ChangePasswordViewModel.OldPassword"></label>
+                                <input type="password" asp-for="ChangePasswordViewModel.OldPassword" class="form-control" />
+
                             </div>
                         </div>
                         <div class="form-group row">
                             <div class="col-xs-6">
-                                @Html.LabelFor(x => x.ChangePasswordViewModel.NewPassword)
-                                @Html.TextBoxFor(x => x.ChangePasswordViewModel.NewPassword, new { @class = "form-control", type = "password" })
+                                <label asp-for="ChangePasswordViewModel.NewPassword"></label>
+                                <input type="password" asp-for="ChangePasswordViewModel.NewPassword" class="form-control" />
                             </div>
                             <div class="col-xs-6">
-                                @Html.LabelFor(x => x.ChangePasswordViewModel.ConfirmNewPassword)
-                                @Html.TextBoxFor(x => x.ChangePasswordViewModel.ConfirmNewPassword, new { @class = "form-control", type = "password" })
+                                <label asp-for="ChangePasswordViewModel.ConfirmNewPassword"></label>
+                                <input type="password" asp-for="ChangePasswordViewModel.ConfirmNewPassword" class="form-control" />
                             </div>
                         </div>
                         <div class="row narrow-gutter">
@@ -121,7 +122,8 @@
                                 <button type="submit" class="btn btn-app btn-block">Şifreyi Güncelle</button>
                             </div>
                         </div>
-                    }
+                    </form>
+                  
                 </div>
                 <!-- End profile tab 2 -->
                 <!-- Profile tab 3 -->
