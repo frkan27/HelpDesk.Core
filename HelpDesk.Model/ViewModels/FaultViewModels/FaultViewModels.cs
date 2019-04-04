@@ -65,7 +65,7 @@ namespace HelpDesk.Model.ViewModels.FaultViewModels
 
         //TODO ENUMS
         [DisplayName("Çözüm Durumunu Seçiniz")]
-        public TechnicianState? TechnicianFailureCondition { get; set; }
+        public TechnicianFailureStatus? TechnicianFailureCondition { get; set; }
         public FaultCondition FaultCondition { get; set; } = FaultCondition.Waiting;
         [DisplayName("Ürün Tipini Seçiniz")]
         public Brand BeyazEsya { get; set; }

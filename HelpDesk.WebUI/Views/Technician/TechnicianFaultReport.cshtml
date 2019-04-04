@@ -1,0 +1,179 @@
+﻿@using HelpDesk.BLL
+@model HelpDesk.Model.ViewModels.FaultViewModels.FaultViewModels
+
+@inject MembershipTools membership
+@{
+    ViewData["Title"] = "TechnicianFaultReport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@section top{
+    <link href="~/assets/css/lightbox.min.css" rel="stylesheet" />
+}
+<h2 class="text-center">Teknisyen Arıza Kontrol Raporu</h2>
+<div class="col-md-8">
+    <div class="card">
+        <div class="card-block tab-content">
+            <div class="tab-pane fade active in" id="profile-tab1">
+
+                ("TeknisyenArızaBildiriOnayla", "Teknisyen", FormMethod.Get, new { @class = "fieldset" }))
+                {
+
+
+                var data = MembershipTools.GetMusteri(Model.MusteriId);
+
+                @Html.HiddenFor(x => x.ArizaId)
+                @Html.HiddenFor(x => x.MusteriId)
+                @Html.HiddenFor(x => x.Email)
+                @Html.HiddenFor(x => x.OperatorId)
+                <h4 class="m-t-sm m-b">Arıza Kontrol Bildiri</h4>
+                <div class="form-group row">
+                    <div class="col-xs-6">
+                        @Html.Label("", "Müşterinin Adı")
+                        @Html.TextBox("data.Name", data.Name, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+                    <div class="col-xs-6">
+                        @Html.Label("", "Müşterinin Soyadı")
+                        @Html.TextBox("data.Surname", data.Surname, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-xs-6">
+                        @Html.Label("", "Müşterinin Telefonu")
+                        @Html.TextBoxFor(x => x.Telno, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+                    <div class="col-xs-6">
+                        @Html.Label("", "Müşterinin Adresi")
+                        @Html.TextAreaFor(x => x.Adres, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+                </div>
+
+                if (Model.TeknisyenArizaDurum != TeknisyenArizaDurum.Çözüldü)
+                {
+                <div class="form-group row">
+                    <div class="col-xs-12">
+                        @Html.LabelFor(x => x.TeknisyenArizaDurum, "Arıza Durumu")
+                    </div>
+                    <div class="col-xs-12">
+                        @Html.EnumDropDownListFor(x => x.TeknisyenArizaDurum, "Arızanın Son Durumu", new { @class = "form-control", size = "1" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        @Html.LabelFor(x => x.TeknisyenArizaAciklama)
+                        @Html.TextAreaFor(x => x.TeknisyenArizaAciklama, new { @class = "form-control", type = "text", placeholder = "Lütfen Arıza Hakkında Açıklama Yapiniz" })
+                    </div>
+                </div>
+                }
+                else
+                {
+                <div class="form-group row">
+                    <div class="col-xs-12">
+                        @Html.LabelFor(x => x.TeknisyenArizaDurum, "Arıza Durumu")
+                    </div>
+                    <div class="col-xs-12">
+                        @Html.EnumDropDownListFor(x => x.TeknisyenArizaDurum, "Arızanın Son Durumu", new { @class = "form-control", @readonly = "readonly", size = "1" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        @Html.LabelFor(x => x.TeknisyenArizaAciklama)
+                        @Html.TextAreaFor(x => x.TeknisyenArizaAciklama, new { @class = "form-control", @readonly = "readonly", type = "text", placeholder = "Lütfen Arıza Hakkında Açıklama Yapiniz" })
+                    </div>
+                </div>
+                }
+                <div class="form-group row">
+                    <div class="col-xs-6">
+                        @Html.Label("", "Arızalı Ürün Resimleri")<br />
+                        @for (int i = 0; i < Model.ArızaPath.Count; i++)
+                        {
+                            var cx = Model.ArızaPath[i];
+                            <a href="@cx" rel="lightbox">
+                                <img src="@cx" class="img-avatar-96" width="100" height="100">
+                            </a>
+                        }
+                    </div>
+                    <div class="col-xs-6">
+                        @Html.Label("", "Ürün Fatura Bilgisi")
+                        <a href="@(string.IsNullOrEmpty(Model.FaturaPath) ? "~/assets/img/avatars/avatar3.jpg" : Model.FaturaPath)" rel="lightbox">
+                            <img src="@(string.IsNullOrEmpty(Model.FaturaPath) ? "~/assets/img/avatars/avatar3.jpg" : Model.FaturaPath)" class="img-avatar-96" width="100" height="100" />
+                        </a>
+                    </div>
+                </div>
+
+                <div class="row narrow-gutter">
+                    @if (Model.TeknisyenArizaDurum != TeknisyenArizaDurum.Çözüldü)
+                    {
+                        <div class="col-xs-12">
+                            <div class="col-md-12">
+                                <button class="btn btn-app-purple btn-block" type="submit">Arıza Kontrol Raporu Gönder</button>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row narrow-gutter">
+                            <div class="col-md-12">
+                                <span class="icon-alert"> Bu Kayıt Çözülmüştür. Sadece Detayları Görebilirsiniz. </span>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                }
+            </div>
+            <!-- End profile tab 1 -->
+        </div>
+        <!-- .card-block .tab-content -->
+    </div>
+    <!-- .card -->
+</div>
+<div class="col-md-4">
+    <div class="panel">
+        <div class="panel-heading">
+            <h3 class="panel-title">Olaylar</h3><h3></h3>
+        </div><br />
+        <div class="panel-body">
+            <div class="timeline">
+                <!-- Timeline header -->
+                <div class="timeline-header">
+                    <div class="timeline-header-title bg-info">Şimdi</div>
+                </div>
+                @foreach (ArizaLOG log in Model.ArizaLogs)
+                {
+                    <div class="timeline-entry">
+                        <div class="timeline-stat">
+                            @switch (log.YapanınRolu)
+                            {
+                                case IdentityRoles.Operator:
+                                    <div class="timeline-icon bg-success"><i class="fa fa-clipboard fa-lg"></i> </div>
+                                    break;
+                                case IdentityRoles.Musteri:
+                                    <div class="timeline-icon bg-info"><i class="fa fa-check fa-lg"></i> </div>
+                                    break;
+                                case IdentityRoles.Teknisyen:
+                                    <div class="timeline-icon bg-warning"><i class="fa fa-briefcase fa-lg"></i> </div>
+                                    break;
+                                default:
+                                    <div class="timeline-icon bg-purple"><i class="fa fa-check fa-lg"></i> </div>
+                                    break;
+                            }
+                        </div>
+                        <div class="timeline-label">
+                            @log.CreatedDate
+                            <h3>@log.Aciklama</h3>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <!--===================================================-->
+        <!-- End Striped Table -->
+    </div>
+</div>
+
+@section bottom{
+    <script src="~/assets/js/lightbox-plus-jquery.min.js"></script>
+    <script src="~/assets/js/lightbox.js"></script>
+}
