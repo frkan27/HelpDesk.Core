@@ -2,7 +2,7 @@
 {
     public enum TechnicianFailureStatus
     {
-        Resolved,
+        Solved,
         MissingPiece,
         Pending,
         Unchecked,

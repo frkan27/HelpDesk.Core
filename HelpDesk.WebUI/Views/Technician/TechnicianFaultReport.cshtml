@@ -1,6 +1,6 @@
 ﻿@using HelpDesk.BLL
 @model HelpDesk.Model.ViewModels.FaultViewModels.FaultViewModels
-
+@using HelpDesk.Model.Enums.FaultEnums
 @inject MembershipTools membership
 @{
     ViewData["Title"] = "TechnicianFaultReport";
@@ -16,112 +16,102 @@
     <div class="card">
         <div class="card-block tab-content">
             <div class="tab-pane fade active in" id="profile-tab1">
-
-                ("TeknisyenArızaBildiriOnayla", "Teknisyen", FormMethod.Get, new { @class = "fieldset" }))
-                {
+                <form asp-controller="Technician" asp-action="TechnicianFaultConfirm" method="post">
 
 
-                var data = MembershipTools.GetMusteri(Model.MusteriId);
 
-                @Html.HiddenFor(x => x.ArizaId)
-                @Html.HiddenFor(x => x.MusteriId)
-                @Html.HiddenFor(x => x.Email)
-                @Html.HiddenFor(x => x.OperatorId)
-                <h4 class="m-t-sm m-b">Arıza Kontrol Bildiri</h4>
-                <div class="form-group row">
-                    <div class="col-xs-6">
-                        @Html.Label("", "Müşterinin Adı")
-                        @Html.TextBox("data.Name", data.Name, new { @class = "form-control", @readonly = "readonly" })
-                    </div>
-                    <div class="col-xs-6">
-                        @Html.Label("", "Müşterinin Soyadı")
-                        @Html.TextBox("data.Surname", data.Surname, new { @class = "form-control", @readonly = "readonly" })
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-xs-6">
-                        @Html.Label("", "Müşterinin Telefonu")
-                        @Html.TextBoxFor(x => x.Telno, new { @class = "form-control", @readonly = "readonly" })
-                    </div>
-                    <div class="col-xs-6">
-                        @Html.Label("", "Müşterinin Adresi")
-                        @Html.TextAreaFor(x => x.Adres, new { @class = "form-control", @readonly = "readonly" })
-                    </div>
-                </div>
+                    var data = MembershipTools.GetMusteri(Model.MusteriId);
 
-                if (Model.TeknisyenArizaDurum != TeknisyenArizaDurum.Çözüldü)
-                {
-                <div class="form-group row">
-                    <div class="col-xs-12">
-                        @Html.LabelFor(x => x.TeknisyenArizaDurum, "Arıza Durumu")
-                    </div>
-                    <div class="col-xs-12">
-                        @Html.EnumDropDownListFor(x => x.TeknisyenArizaDurum, "Arızanın Son Durumu", new { @class = "form-control", size = "1" })
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-xs-12">
-                        @Html.LabelFor(x => x.TeknisyenArizaAciklama)
-                        @Html.TextAreaFor(x => x.TeknisyenArizaAciklama, new { @class = "form-control", type = "text", placeholder = "Lütfen Arıza Hakkında Açıklama Yapiniz" })
-                    </div>
-                </div>
-                }
-                else
-                {
-                <div class="form-group row">
-                    <div class="col-xs-12">
-                        @Html.LabelFor(x => x.TeknisyenArizaDurum, "Arıza Durumu")
-                    </div>
-                    <div class="col-xs-12">
-                        @Html.EnumDropDownListFor(x => x.TeknisyenArizaDurum, "Arızanın Son Durumu", new { @class = "form-control", @readonly = "readonly", size = "1" })
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-xs-12">
-                        @Html.LabelFor(x => x.TeknisyenArizaAciklama)
-                        @Html.TextAreaFor(x => x.TeknisyenArizaAciklama, new { @class = "form-control", @readonly = "readonly", type = "text", placeholder = "Lütfen Arıza Hakkında Açıklama Yapiniz" })
-                    </div>
-                </div>
-                }
-                <div class="form-group row">
-                    <div class="col-xs-6">
-                        @Html.Label("", "Arızalı Ürün Resimleri")<br />
-                        @for (int i = 0; i < Model.ArızaPath.Count; i++)
-                        {
-                            var cx = Model.ArızaPath[i];
-                            <a href="@cx" rel="lightbox">
-                                <img src="@cx" class="img-avatar-96" width="100" height="100">
-                            </a>
-                        }
-                    </div>
-                    <div class="col-xs-6">
-                        @Html.Label("", "Ürün Fatura Bilgisi")
-                        <a href="@(string.IsNullOrEmpty(Model.FaturaPath) ? "~/assets/img/avatars/avatar3.jpg" : Model.FaturaPath)" rel="lightbox">
-                            <img src="@(string.IsNullOrEmpty(Model.FaturaPath) ? "~/assets/img/avatars/avatar3.jpg" : Model.FaturaPath)" class="img-avatar-96" width="100" height="100" />
-                        </a>
-                    </div>
-                </div>
-
-                <div class="row narrow-gutter">
-                    @if (Model.TeknisyenArizaDurum != TeknisyenArizaDurum.Çözüldü)
-                    {
-                        <div class="col-xs-12">
-                            <div class="col-md-12">
-                                <button class="btn btn-app-purple btn-block" type="submit">Arıza Kontrol Raporu Gönder</button>
-                            </div>
+                    @Html.HiddenFor(x => x.FaultId)
+                    @Html.HiddenFor(x => x.CustomerId)
+                    @Html.HiddenFor(x => x.Email)
+                    @Html.HiddenFor(x => x.OperatorId)
+                    <h4 class="m-t-sm m-b">Arıza Kontrol Bildiri</h4>
+                    <div class="form-group row">
+                        <div class="col-xs-6">
+                            <label for="Name">Müşterinin Adı</label>
+                            <input type="text" for="data.Name" class="form-control" placeholder="İsim giriniz" />
                         </div>
+                        <div class="col-xs-6">
+                            <label for="Surname">Müşterinin Soyadı</label>
+                            <input type="text" for="Surname" class="form-control" placeholder="Soyisim giriniz" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-xs-6">
+                            <label for="Email">Müşterinin Maili</label>
+                            <input type="text" for="Email" class="form-control" placeholder="Mail giriniz" />
+                        </div>
+                        <div class="col-xs-6">
+                            <label asp-for="PhoneNumber">Telefon</label>
+                            <input type="text" asp-for="PhoneNumber" class="form-control" placeholder="Telefon numarası giriniz" />
+                        </div>
+                    </div>
+
+                    @if (Model.TechnicianFailureCondition != TechnicianFailureStatus.Solved)
+                    {
+                    <div class="form-group row">
+                        <div class="col-xs-12">
+                            <label asp-for="TechnicianFailureCondition">Fault State</label>                           
+                        </div>
+                        @*BURAYI NASIL YAPACAĞIMI BULAMADIM...*@
+                        @*<div class="col-xs-12">
+                            @Html.EnumDropDownListFor(x => x.TeknisyenArizaDurum, "Arızanın Son Durumu", new { @class = "form-control", size = "1" })<select asp-for="TechnicianFailureCondition" asp-items=""></select>                          
+                        </div>*@
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <label asp-for="TechnicialFaultDescription">Ariza Açıklması</label>
+                            <input type="text" asp-for="TechnicialFaultDescription" class="form-control" placeholder="Lütfen arıza açıklması giriniz" />                         
+                        </div>
+                    </div>
                     }
                     else
                     {
-                        <div class="row narrow-gutter">
-                            <div class="col-md-12">
-                                <span class="icon-alert"> Bu Kayıt Çözülmüştür. Sadece Detayları Görebilirsiniz. </span>
-                            </div>
+                    <div class="form-group row">
+                        <div class="col-xs-12">
+                            <label asp-for="TechnicianFailureCondition">Teknisyen Arıza Durumu</label>                          
                         </div>
+                        @*<div class="col-xs-12">
+                            @Html.EnumDropDownListFor(x => x.TeknisyenArizaDurum, "Arızanın Son Durumu", new { @class = "form-control", @readonly = "readonly", size = "1" })
+                        </div>*@
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <label asp-for="TechnicialFaultDescription">Ariza Açıklması</label>
+                            <input type="text" asp-for="TechnicialFaultDescription" class="form-control" placeholder="Lütfen arıza açıklması giriniz" />
+                        </div>
+                    </div>
                     }
-                </div>
+                    <div class="form-group row">
+                        <div class="col-xs-6">
+                            <label asp-for="PostedFileFault">Arıza Resmi</label>
+                            <input type="file" asp-for="PostedFileFault" class="form-control" multiple="true" placeholder="ADRESSSs" />
+                            <div class="col-xs-6">
+                                <label asp-for="PostedFileFatura">Arıza Resmi</label>
+                                <input type="file" asp-for="PostedFileFatura" class="form-control" placeholder="ADRESSSs" />
+                            </div>
 
-                }
+                    <div class="row narrow-gutter">
+                        @if (Model.TechnicianFailureCondition != TechnicianFailureStatus.Solved)
+                        {
+                            <div class="col-xs-12">
+                                <div class="col-md-12">
+                                    <button class="btn btn-app-purple btn-block" type="submit">Arıza Kontrol Raporu Gönder</button>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="row narrow-gutter">
+                                <div class="col-md-12">
+                                    <span class="icon-alert"> Bu Kayıt Çözülmüştür. Sadece Detayları Görebilirsiniz. </span>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                </form>
             </div>
             <!-- End profile tab 1 -->
         </div>
@@ -129,9 +119,12 @@
     </div>
     <!-- .card -->
 </div>
-<div class="col-md-4">
+@*<div class="col-md-4">
     <div class="panel">
         <div class="panel-heading">
+
+
+
             <h3 class="panel-title">Olaylar</h3><h3></h3>
         </div><br />
         <div class="panel-body">
@@ -171,7 +164,7 @@
         <!--===================================================-->
         <!-- End Striped Table -->
     </div>
-</div>
+</div>*@
 
 @section bottom{
     <script src="~/assets/js/lightbox-plus-jquery.min.js"></script>
