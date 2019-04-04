@@ -27,7 +27,8 @@ namespace HelpDesk.WebUI.Controllers
         private readonly IHostingEnvironment _hostingEnvironment;
 
 
-        public AccountController(IRepoIdentity userRoleRepo, MembershipTools membershipTools, RoleUserRepo roleUserRepo, IHostingEnvironment hostingEnvironment)
+        public AccountController(IRepoIdentity userRoleRepo, MembershipTools membershipTools, RoleUserRepo roleUserRepo,
+            IHostingEnvironment hostingEnvironment)
         {
             _membershipTools = membershipTools;
             _userRoleRepo = userRoleRepo;
@@ -152,7 +153,7 @@ namespace HelpDesk.WebUI.Controllers
             var user = await _membershipTools.UserManager.FindByIdAsync(model.Id);
 
             if (model.PostedFile != null &&
-                   model.PostedFile.Length > 0)
+                model.PostedFile.Length > 0)
             {
                 var file = model.PostedFile;
                 string fileName = Path.GetFileNameWithoutExtension(file.FileName);
@@ -187,6 +188,7 @@ namespace HelpDesk.WebUI.Controllers
                 {
                     //todo tekrar aktivasyon maili gönderilmeli. rolü de aktif olmamış role çevrilmeli.
                 }
+
                 user.Email = model.Email;
 
                 await _membershipTools.UserManager.UpdateAsync(user);
@@ -236,13 +238,15 @@ namespace HelpDesk.WebUI.Controllers
                     return RedirectToAction("Index", "Home");
                 }
 
-                var result = await _membershipTools.UserManager.ChangePasswordAsync(await _membershipTools.UserManager.GetUserAsync(HttpContext.User),
+                var result = await _membershipTools.UserManager.ChangePasswordAsync(
+                    await _membershipTools.UserManager.GetUserAsync(HttpContext.User),
                     model.OldPassword, model.NewPassword);
 
                 if (result.Succeeded)
                 {
                     var emailService = new EMailService();
-                    var body = $"Merhaba <b>{user.Name} {user.Surname}</b><br>Hesabınızın şifresi değiştirilmiştir. <br> Bilginiz dahilinde olmayan değişiklikler için hesabınızı güvence altına almanızı öneririz.</p>";
+                    var body =
+                        $"Merhaba <b>{user.Name} {user.Surname}</b><br>Hesabınızın şifresi değiştirilmiştir. <br> Bilginiz dahilinde olmayan değişiklikler için hesabınızı güvence altına almanızı öneririz.</p>";
                     emailService.Send(new MailModel() { Body = body, Subject = "Şifre Değiştirme hk." }, user.Email);
 
                     return RedirectToAction("Logout", "Account");
@@ -254,6 +258,7 @@ namespace HelpDesk.WebUI.Controllers
                     {
                         err += resultError + " ";
                     }
+
                     ModelState.AddModelError("", err);
                     return RedirectToAction("Index", "Home");
                 }
@@ -271,98 +276,44 @@ namespace HelpDesk.WebUI.Controllers
             }
         }
 
-        //[HttpGet]
-        //[AllowAnonymous]
-        //public ActionResult Activation(string code)
-        //{
-        //    try
-        //    {
-        //        var userStore = NewUserStore();
-        //        var user = userStore.Users.FirstOrDefault(x => x.ActivationCode == code);
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult Activation(string code)
+        {
 
-        //        if (user != null)
-        //        {
-        //            if (user.EmailConfirmed)
-        //            {
-        //                ViewBag.Message = $"<span class='alert alert-success'>Bu hesap daha önce aktive edilmiştir.</span>";
-        //            }
-        //            else
-        //            {
-        //                user.EmailConfirmed = true;
+            try
+            {
+                var user = _membershipTools.UserManager.Users.FirstOrDefault(x => x.ActivationCode == code);
 
-        //                userStore.Context.SaveChanges();
-        //                ViewBag.Message = $"<span class='alert alert-success'>Aktivasyon işleminiz başarılı</span>";
-        //            }
-        //        }
-        //        else
-        //        {
-        //            ViewBag.Message = $"<span class='alert alert-danger'>Aktivasyon başarısız</span>";
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ViewBag.Message = "<span class='alert alert-danger'>Aktivasyon işleminde bir hata oluştu</span>";
-        //    }
+                if (user != null)
+                {
+                    if (user.EmailConfirmed)
+                    {
+                        ViewBag.Message =
+                            $"<span class='alert alert-success'>Bu hesap daha önce aktive edilmiştir.</span>";
+                    }
+                    else
+                    {
+                        user.EmailConfirmed = true;
+                        _membershipTools.UserManager.UpdateAsync(user);
+                        ViewBag.Message = $"<span class='alert alert-success'>Aktivasyon işleminiz başarılı</span>";
+                    }
+                }
+                else
+                {
+                    ViewBag.Message = $"<span class='alert alert-danger'>Aktivasyon başarısız</span>";
+                }
+            }
+            catch (Exception)
+            {
+                ViewBag.Message = "<span class='alert alert-danger'>Aktivasyon işleminde bir hata oluştu</span>";
+            }
 
-        //    return View();
-        //}
+            return View();
+        }
 
-        //[HttpGet]
-        //[AllowAnonymous]
-        //public ActionResult RecoverPassword()
-        //{
-        //    return View();
-        //}
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //[AllowAnonymous]
-        //public async Task<ActionResult> RecoverPassword(RecoverPasswordViewModel model)
-        //{
-        //    try
-        //    {
-        //        var userStore = NewUserStore();
-        //        var userManager = NewUserManager();
-        //        var user = await userStore.FindByEmailAsync(model.Email);
-        //        if (user == null)
-        //        {
-        //            ModelState.AddModelError(string.Empty, $"{model.Email} mail adresine kayıtlı bir üyeliğe erişilemedi");
-        //            return View(model);
-        //        }
 
-        //        var newPassword = StringHelpers.GetCode().Substring(0, 6);
-        //        await userStore.SetPasswordHashAsync(user, userManager.PasswordHasher.HashPassword(newPassword));
-        //        var result = userStore.Context.SaveChanges();
-        //        if (result == 0)
-        //        {
-        //            TempData["Model"] = new ErrorViewModel()
-        //            {
-        //                Text = $"Bir hata oluştu",
-        //                ActionName = "RecoverPassword",
-        //                ControllerName = "Account",
-        //                ErrorCode = 500
-        //            };
-        //            return RedirectToAction("Error", "Home");
-        //        }
-
-        //        var emailService = new EmailService();
-        //        var body = $"Merhaba <b>{user.Name} {user.Surname}</b><br>Hesabınızın parolası sıfırlanmıştır<br> Yeni parolanız: <b>{newPassword}</b> <p>Yukarıdaki parolayı kullanarak sistemize giriş yapabilirsiniz.</p>";
-        //        emailService.Send(new IdentityMessage() { Body = body, Subject = $"{user.UserName} Şifre Kurtarma" }, user.Email);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        TempData["Model"] = new ErrorViewModel()
-        //        {
-        //            Text = $"Bir hata oluştu {ex.Message}",
-        //            ActionName = "RecoverPassword",
-        //            ControllerName = "Account",
-        //            ErrorCode = 500
-        //        };
-        //        return RedirectToAction("Error", "Home");
-        //    }
-
-        //    return View();
-        //}
     }
 
 }
